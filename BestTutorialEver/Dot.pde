@@ -4,6 +4,8 @@ class Dot {
   PVector acc;
   Brain brain;
   
+  int step = 0;
+
   boolean dead = false;
   boolean reachedGoal = false;
   boolean isBest = false;//true if this dot is the best dot from the previous generation
@@ -35,9 +37,9 @@ class Dot {
   //-----------------------------------------------------------------------------------------------------------------------
   //moves the dot according to the brains directions
   void move() {
-    if (brain.directions.length > brain.step) {//if there are still directions left then set the acceleration as the next PVector in the direcitons array
-      acc = brain.directions[brain.step];
-      brain.step++;
+    if (brain.directions.length > step) {//if there are still directions left then set the acceleration as the next PVector in the direcitons array
+      acc = brain.directions[step];
+      step++;
     } else {//if at the end of the directions array then the dot is dead
       dead = true;
     }
@@ -67,7 +69,7 @@ class Dot {
   //calculates the fitness
   void calculateFitness() {
     if (reachedGoal) {//if the dot reached the goal then the fitness is based on the amount of steps it took to get there
-      fitness = 1.0/16.0 + 10000.0/(float)(brain.step * brain.step);
+      fitness = 1.0/16.0 + 10000.0/(float)(step * step);
     } else {//if the dot didn't reach the goal then the fitness is based on how close it is to the goal
     float distanceToGoal = dist(pos.x, pos.y, goal.x, goal.y);
       fitness = 1.0/(distanceToGoal * distanceToGoal);

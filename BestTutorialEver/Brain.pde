@@ -1,6 +1,5 @@
 class Brain {
   PVector[] directions;//series of vectors which get the dot to the goal (hopefully)
-  int step = 0;
 
   Brain(int size) {
     directions = new PVector[size];
