@@ -19,6 +19,26 @@ void draw() {
   rect(0, 300, 600, 10);
 
   if (test.allDotsDead()) {
+    float[] fs = new float[test.dots.length];
+    for (int i = 0; i < fs.length; i++)
+    {
+      fs[i] = test.dots[i].fitness;
+    }
+    fs = reverse(sort(fs));
+    for (int i = 0; i < 10; i++)
+    {
+      print(fs[i], "  ");
+    }
+    println();
+    for (int i = 0; i < fs.length; i++)
+    {
+      Dot d = test.dots[i];
+      if (d.fitness <= fs[9])
+      {
+        d.printFitness();
+      }
+    }
+    println();
     //genetic algorithm
     test.calculateFitness();
     test.naturalSelection();

@@ -81,6 +81,25 @@ class Dot {
     }
   }
 
+  //--------------------------------------------------------------------------------------------------------------------------------------
+  //print the fitness
+  void printFitness() {
+    float distanceToGoal = dist(pos.x, pos.y, goal.x, goal.y);
+    if (distanceToGoal < 5)
+    {
+      distanceToGoal = 5;
+    }
+    print("[");
+    print(10.0 / distanceToGoal);
+    if (distanceToGoal < 100) {
+      print("+");
+      print(stepConst / step);
+    }
+    print("=");
+    print(fitness);
+    print("]  ");
+  }
+
   //---------------------------------------------------------------------------------------------------------------------------------------
   //clone it 
   Dot clone() {
