@@ -68,13 +68,13 @@ class Population {
     float stepConst = calculateStepConst();
 
     //the champion lives on 
-    newDots[0] = dots[bestDot].gimmeBaby();
+    newDots[0] = dots[bestDot].clone();
     newDots[0].isBest = true;
     for (int i = 1; i< newDots.length; i++) {
       //select parent based on fitness
       Dot parent = selectParent();
       //get baby from them
-      newDots[i] = parent.gimmeBaby();
+      newDots[i] = parent.clone();
     }
     for (int i = 0; i< newDots.length; i++) {
       newDots[i].stepConst = stepConst;

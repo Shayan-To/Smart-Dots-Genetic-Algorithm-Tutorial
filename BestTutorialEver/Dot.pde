@@ -83,7 +83,7 @@ class Dot {
 
   //---------------------------------------------------------------------------------------------------------------------------------------
   //clone it 
-  Dot gimmeBaby() {
+  Dot clone() {
     Dot baby = new Dot();
     baby.brain = brain.clone();//babies have the same brain as their parents
     return baby;
