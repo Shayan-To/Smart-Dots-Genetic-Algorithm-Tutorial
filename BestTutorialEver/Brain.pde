@@ -2,7 +2,6 @@ class Brain {
   PVector[] directions;//series of vectors which get the dot to the goal (hopefully)
   int step = 0;
 
-
   Brain(int size) {
     directions = new PVector[size];
     randomize();
@@ -24,12 +23,10 @@ class Brain {
     for (int i = 0; i < directions.length; i++) {
       clone.directions[i] = directions[i].copy();
     }
-
     return clone;
   }
 
   //----------------------------------------------------------------------------------------------------------------------------------------
-
   //mutates the brain by setting some of the directions to random vectors
   void mutate() {
     float mutationRate = 0.01;//chance that any vector in directions gets changed
