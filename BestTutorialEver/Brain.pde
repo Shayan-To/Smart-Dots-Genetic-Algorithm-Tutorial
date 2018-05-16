@@ -8,11 +8,18 @@ class Brain {
   }
 
   //--------------------------------------------------------------------------------------------------------------------------------
+  // creates a random vector
+  PVector randomVector() {
+    PVector r = PVector.fromAngle(random(2*PI));
+    r.mult(random(1.5));
+    return r;
+  }
+
+  //--------------------------------------------------------------------------------------------------------------------------------
   //sets all the vectors in directions to a random vector with length 1
   void randomize() {
     for (int i = 0; i< directions.length; i++) {
-      float randomAngle = random(2*PI);
-      directions[i] = PVector.fromAngle(randomAngle);
+      directions[i] = randomVector();
     }
   }
 
@@ -34,8 +41,7 @@ class Brain {
       float rand = random(1);
       if (rand < mutationRate) {
         //set this direction as a random direction 
-        float randomAngle = random(2*PI);
-        directions[i] = PVector.fromAngle(randomAngle);
+        directions[i] = randomVector();
       }
     }
   }
