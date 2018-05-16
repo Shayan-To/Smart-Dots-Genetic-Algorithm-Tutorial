@@ -5,7 +5,6 @@ class Population {
   int gen = 1;
 
   int bestDot = 0; //the index of the best dot in the dots[]
-  int minStep = 1000;
 
   Population(int size) {
     dots = new Dot[size];
@@ -27,11 +26,7 @@ class Population {
   //update all dots 
   void update() {
     for (int i = 0; i< dots.length; i++) {
-      if (dots[i].step > minStep) {//if the dot has already taken more steps than the best dot has taken to reach the goal
-        dots[i].dead = true;//then it dead
-      } else {
       dots[i].update();
-    }
     }
   }
 
@@ -129,9 +124,6 @@ class Population {
     bestDot = maxIndex;
 
     //if this dot reached the goal then reset the minimum number of steps it takes to get to the goal
-    if (dots[bestDot].reachedGoal) {
-      minStep = dots[bestDot].step;
-      println("step:", minStep);
-    }
+    println("best step:", dots[bestDot].step);
   }
 }
