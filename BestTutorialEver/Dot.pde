@@ -36,6 +36,10 @@ class Dot {
         fill(0, 255, 0);
         size = 6;
         break;
+      case 2:
+        fill(0, 0, 255);
+        size = 6;
+        break;
     }
     ellipse(pos.x, pos.y, size, size);
   }

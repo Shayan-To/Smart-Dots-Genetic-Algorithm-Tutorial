@@ -5,6 +5,7 @@ class Population {
   int gen = 1;
 
   int bestDot = 0; //the index of the best dot in the dots[]
+  int bestBFDot = 0; //the index of the best dot in terms of betsFitness in the dots[]
 
   Population(int size) {
     dots = new Dot[size];
@@ -77,7 +78,9 @@ class Population {
     //the champion lives on 
     newDots[0] = dots[bestDot].clone();
     newDots[0].mode = 1;
-    for (int i = 1; i< newDots.length; i++) {
+    newDots[1] = dots[bestBFDot].clone();
+    newDots[1].mode = 2;
+    for (int i = 2; i< newDots.length; i++) {
       //select parent based on fitness
       Dot parent = selectParent();
       //get baby from them
@@ -143,15 +146,22 @@ class Population {
   //finds the dot with the highest fitness and sets it as the best dot
   void setBestDot() {
     float max = 0;
+    float maxBF = 0;
     int maxIndex = 0;
+    int maxBFIndex = 0;
     for (int i = 0; i < dots.length; i++) {
       if (dots[i].fitness > max) {
         max = dots[i].fitness;
         maxIndex = i;
       }
+      if (dots[i].bestFitness > maxBF) {
+        maxBF = dots[i].bestFitness;
+        maxBFIndex = i;
+      }
     }
 
     bestDot = maxIndex;
+    bestBFDot = maxBFIndex;
 
     //if this dot reached the goal then reset the minimum number of steps it takes to get to the goal
     println("best step:", dots[bestDot].step);
