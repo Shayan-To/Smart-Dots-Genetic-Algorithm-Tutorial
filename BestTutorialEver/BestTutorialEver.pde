@@ -40,7 +40,6 @@ void draw() {
     }
     println();
     //genetic algorithm
-    test.calculateFitness();
     test.naturalSelection();
     test.mutateDemBabies();
   } else {

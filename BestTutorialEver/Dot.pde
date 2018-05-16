@@ -11,6 +11,7 @@ class Dot {
   boolean isBest = false;//true if this dot is the best dot from the previous generation
 
   float fitness = 0;
+  float bestFitness = 0;
   float stepConst = 300;
 
   Dot() {
@@ -78,6 +79,10 @@ class Dot {
     if (distanceToGoal < 100)
     {
       fitness += stepConst / step;
+    }
+    if (bestFitness < fitness)
+    {
+      bestFitness = fitness;
     }
   }
 

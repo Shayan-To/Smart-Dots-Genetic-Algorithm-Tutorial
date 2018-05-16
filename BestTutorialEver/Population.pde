@@ -28,6 +28,7 @@ class Population {
     for (int i = 0; i< dots.length; i++) {
       dots[i].update();
     }
+    calculateFitness();
   }
 
   //-----------------------------------------------------------------------------------------------------------------------------------
@@ -89,7 +90,7 @@ class Population {
   void calculateFitnessSum() {
     fitnessSum = 0;
     for (int i = 0; i< dots.length; i++) {
-      fitnessSum += dots[i].fitness;
+      fitnessSum += dots[i].bestFitness;
     }
   }
 
@@ -104,7 +105,7 @@ class Population {
     float runningSum = 0;
 
     for (int i = 0; i< dots.length; i++) {
-      runningSum+= dots[i].fitness;
+      runningSum+= dots[i].bestFitness;
       if (runningSum > rand) {
         return dots[i];
       }
