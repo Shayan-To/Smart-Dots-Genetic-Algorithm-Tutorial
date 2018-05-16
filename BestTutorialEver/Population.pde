@@ -124,8 +124,18 @@ class Population {
   //------------------------------------------------------------------------------------------------------------------------------------------
   //mutates all the brains of the babies
   void mutateDemBabies() {
-    for (int i = 1; i< dots.length; i++) {
-      dots[i].brain.mutate();
+    float[] fs = new float[dots.length];
+    for (int i = 0; i < dots.length; i++)
+    {
+      fs[i] = dots[i].bestFitness;
+    }
+    fs = reverse(sort(fs));
+    for (int i = 0; i < dots.length; i++)
+    {
+      if (dots[i].bestFitness > fs[50])
+      {
+        dots[i].brain.mutate();
+      }
     }
   }
 
