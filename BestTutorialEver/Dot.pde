@@ -11,6 +11,7 @@ class Dot {
   boolean isBest = false;//true if this dot is the best dot from the previous generation
 
   float fitness = 0;
+  float stepConst = 300;
 
   Dot() {
     brain = new Brain(1000);//new brain with 1000 instructions
@@ -68,11 +69,15 @@ class Dot {
   //--------------------------------------------------------------------------------------------------------------------------------------
   //calculates the fitness
   void calculateFitness() {
-    if (reachedGoal) {//if the dot reached the goal then the fitness is based on the amount of steps it took to get there
-      fitness = 1.0/16.0 + 10000.0/(float)(step * step);
-    } else {//if the dot didn't reach the goal then the fitness is based on how close it is to the goal
     float distanceToGoal = dist(pos.x, pos.y, goal.x, goal.y);
-      fitness = 1.0/(distanceToGoal * distanceToGoal);
+    if (distanceToGoal < 5)
+    {
+      distanceToGoal = 5;
+    }
+    fitness = 10.0 / distanceToGoal;
+    if (distanceToGoal < 100)
+    {
+      fitness += stepConst / step;
     }
   }
 

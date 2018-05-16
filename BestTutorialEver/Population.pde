@@ -38,6 +38,15 @@ class Population {
     }
   }
 
+  //-----------------------------------------------------------------------------------------------------------------------------------
+  //calculate the step constant to be set to all the dots
+  float calculateStepConst() {
+    float sum = 0;
+    for (int i = 0; i< dots.length; i++) {
+      sum += dots[i].step;
+    }
+    return sum / dots.length * 2.5;
+  }
 
   //------------------------------------------------------------------------------------------------------------------------------------
   //returns whether all the dots are either dead or have reached the goal
@@ -56,6 +65,7 @@ class Population {
     Dot[] newDots = new Dot[dots.length];//next gen
     setBestDot();
     calculateFitnessSum();
+    float stepConst = calculateStepConst();
 
     //the champion lives on 
     newDots[0] = dots[bestDot].gimmeBaby();
@@ -65,6 +75,9 @@ class Population {
       Dot parent = selectParent();
       //get baby from them
       newDots[i] = parent.gimmeBaby();
+    }
+    for (int i = 0; i< newDots.length; i++) {
+      newDots[i].stepConst = stepConst;
     }
 
     dots = newDots.clone();
