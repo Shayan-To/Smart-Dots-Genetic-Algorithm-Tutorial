@@ -16,10 +16,16 @@ class Population {
   //------------------------------------------------------------------------------------------------------------------------------
   //show all dots
   void show() {
-    for (int i = 1; i< dots.length; i++) {
+    for (int i = 0; i < dots.length; i++) {
+      if (dots[i].mode == 0) {
         dots[i].show();
       }
-    dots[0].show();
+    }
+    for (int i = 0; i < dots.length; i++) {
+      if (dots[i].mode != 0) {
+        dots[i].show();
+      }
+    }
   }
 
   //-------------------------------------------------------------------------------------------------------------------------------
@@ -70,7 +76,7 @@ class Population {
 
     //the champion lives on 
     newDots[0] = dots[bestDot].clone();
-    newDots[0].isBest = true;
+    newDots[0].mode = 1;
     for (int i = 1; i< newDots.length; i++) {
       //select parent based on fitness
       Dot parent = selectParent();

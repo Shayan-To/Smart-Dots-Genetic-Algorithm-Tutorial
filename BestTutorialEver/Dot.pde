@@ -8,7 +8,8 @@ class Dot {
 
   boolean dead = false;
   boolean reachedGoal = false;
-  boolean isBest = false;//true if this dot is the best dot from the previous generation
+
+  int mode = 0;
 
   float fitness = 0;
   float bestFitness = 0;
@@ -26,14 +27,17 @@ class Dot {
   //-----------------------------------------------------------------------------------------------------------------
   //draws the dot on the screen
   void show() {
-    //if this dot is the best dot from the previous generation then draw it as a big green dot
-    if (isBest) {
-      fill(0, 255, 0);
-      ellipse(pos.x, pos.y, 8, 8);
-    } else {//all other dots are just smaller black dots
+    int size = 4;
+    switch (mode) {
+      case 0: //all other dots are just smaller black dots
         fill(0);
-      ellipse(pos.x, pos.y, 4, 4);
+        break;
+      case 1: //if this dot is the best dot from the previous generation then draw it as a big green dot
+        fill(0, 255, 0);
+        size = 6;
+        break;
     }
+    ellipse(pos.x, pos.y, size, size);
   }
 
   //-----------------------------------------------------------------------------------------------------------------------
