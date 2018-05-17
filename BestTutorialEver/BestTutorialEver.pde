@@ -19,30 +19,32 @@ void draw() {
   rect(0, 300, 600, 10);
 
   if (test.allDotsDead()) {
-    float[] fs = new float[test.dots.length];
-    for (int i = 0; i < fs.length; i++)
-    {
-      fs[i] = test.dots[i].fitness;
-    }
-    fs = reverse(sort(fs));
+    println();
+
+    test.sortDots(true);
+    int bestStep = test.dots[0].step;
     for (int i = 0; i < 10; i++)
     {
-      print(fs[i], "  ");
+      print(test.dots[i].bestFitness, "  ");
     }
     println();
-    for (int i = 0; i < fs.length; i++)
+
+    test.sortDots(false);
+    for (int i = 0; i < 10; i++)
     {
       Dot d = test.dots[i];
-      if (d.fitness <= fs[9])
-      {
-        d.printFitness();
-      }
+      d.printFitness();
     }
     println();
+
+    println("best step:", bestStep);
+
     //genetic algorithm
     test.naturalSelection();
     test.mutateDemBabies();
     test.clearBestFitnesses();
+
+    println("generation:", test.gen);
   } else {
     //if any of the dots are still alive then update and then show them
     test.update();

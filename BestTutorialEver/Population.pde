@@ -121,6 +121,7 @@ class Population {
     }
 
     //should never get to this point
+    println("An error has occured.");
     return null;
   }
 
@@ -188,8 +189,5 @@ class Population {
 
     bestDot = maxIndex;
     bestBFDot = maxBFIndex;
-
-    //if this dot reached the goal then reset the minimum number of steps it takes to get to the goal
-    println("best step:", dots[bestDot].step);
   }
 }
