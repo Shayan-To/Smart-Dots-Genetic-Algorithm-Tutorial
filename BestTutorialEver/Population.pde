@@ -137,16 +137,27 @@ class Population {
     calculateFitnessSum();
     float stepConst = calculateStepConst();
 
-    //the champion lives on
-    newDots[0] = dots[bestDot].clone(startPoint);
-    newDots[0].mode = 1;
-    newDots[1] = dots[bestBFDot].clone(startPoint);
-    newDots[1].mode = 2;
-    for (int i = 2; i< newDots.length; i++) {
-      //select parent based on fitness
-      Dot parent = selectParent();
-      //get baby from them
-      newDots[i] = parent.clone(startPoint);
+    {
+      int i = 0;
+      //the champion lives on
+      newDots[i] = dots[bestDot].clone(startPoint);
+      newDots[i].mode = 1;
+      i++;
+      newDots[i] = dots[bestBFDot].clone(startPoint);
+      newDots[i].mode = 2;
+      i++;
+      for (int j = 0; j < 100; j++)
+      {
+        newDots[i] = new Dot(startPoint, 1000);
+        newDots[i].brain.randomize();
+        i++;
+      }
+      for (; i < newDots.length; i++) {
+        //select parent based on fitness
+        Dot parent = selectParent();
+        //get baby from them
+        newDots[i] = parent.clone(startPoint);
+      }
     }
     for (int i = 0; i< newDots.length; i++) {
       newDots[i].stepConst = stepConst;
@@ -215,7 +226,7 @@ class Population {
   //mutates all the brains of the babies
   void mutateDemBabies() {
     this.sortDots(true);
-    for (int i = 50; i < dots.length; i++)
+    for (int i = 100; i < dots.length; i++)
     {
       dots[i].brain.mutate();
     }
