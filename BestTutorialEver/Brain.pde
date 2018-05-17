@@ -3,7 +3,6 @@ class Brain {
 
   Brain(int size) {
     directions = new PVector[size];
-    randomize();
   }
 
   //--------------------------------------------------------------------------------------------------------------------------------
@@ -39,7 +38,7 @@ class Brain {
     for (int i =0; i< directions.length; i++) {
       float rand = random(1);
       if (rand < mutationRate) {
-        //set this direction as a random direction 
+        //set this direction as a random direction
         directions[i] = randomVector();
       }
     }

@@ -1,22 +1,14 @@
 Population test;
-PVector goal  = new PVector(400, 10);
 
 void setup() {
   size(800, 600); //size of the window
   frameRate(100);//increase this to make the dots go faster
-  test = new Population(1000);//create a new population with 1000 members
+  randomSeed(753);
+  test = new Population(1000, 100);//create a new population with 1000 dots and 10 obstacles
 }
 
-void draw() { 
+void draw() {
   background(255);
-
-  //draw goal
-  fill(255, 0, 0);
-  ellipse(goal.x, goal.y, 10, 10);
-
-  //draw obstacle(s)
-  fill(0, 0, 255);
-  rect(0, 300, 600, 10);
 
   if (test.allDotsDead()) {
     println();
@@ -33,7 +25,7 @@ void draw() {
     for (int i = 0; i < 10; i++)
     {
       Dot d = test.dots[i];
-      d.printFitness();
+      d.printFitness(test.goal);
     }
     println();
 
@@ -43,6 +35,7 @@ void draw() {
     test.naturalSelection();
     test.mutateDemBabies();
     test.clearBestFitnesses();
+    test.gen++;
 
     println("generation:", test.gen);
   } else {

@@ -3,7 +3,7 @@ class Dot {
   PVector vel;
   PVector acc;
   Brain brain;
-  
+
   int step = 0;
 
   boolean dead = false;
@@ -15,13 +15,17 @@ class Dot {
   float bestFitness = 0;
   float stepConst = 300;
 
-  Dot() {
-    brain = new Brain(1000);//new brain with 1000 instructions
-
+  private Dot(PVector pos) {
     //start the dots at the bottom of the window with a no velocity or acceleration
-    pos = new PVector(width /2, height - 10);
+    this.pos = new PVector();
+    this.pos.set(pos);
     vel = new PVector(0, 0);
     acc = new PVector(0, 0);
+  }
+
+  Dot(PVector pos, int brainSize) {
+    this(pos);
+    brain = new Brain(brainSize);//new brain with brainSize instruction
   }
 
   //-----------------------------------------------------------------------------------------------------------------
@@ -60,24 +64,9 @@ class Dot {
     pos.add(vel);
   }
 
-  //-------------------------------------------------------------------------------------------------------------------
-  //calls the move function and check for collisions and stuff
-  void update() {
-    if (!dead && !reachedGoal) {
-      move();
-      if (pos.x < 2|| pos.y < 2 || pos.x > width - 2 || pos.y > height - 2) {//if near the edges of the window then kill it 
-        dead = true;
-      } else if (dist(pos.x, pos.y, goal.x, goal.y) < 5) {//if reached goal
-        reachedGoal = true;
-      } else if (pos.x < 600 && pos.y < 310 && pos.x > 0 && pos.y > 300) {//if hit obstacle
-        dead = true;
-      }
-    }
-  }
-
   //--------------------------------------------------------------------------------------------------------------------------------------
   //calculates the fitness
-  void calculateFitness() {
+  void calculateFitness(PVector goal) {
     float distanceToGoal = dist(pos.x, pos.y, goal.x, goal.y);
     if (distanceToGoal < 5)
     {
@@ -96,7 +85,7 @@ class Dot {
 
   //--------------------------------------------------------------------------------------------------------------------------------------
   //print the fitness
-  void printFitness() {
+  void printFitness(PVector goal) {
     float distanceToGoal = dist(pos.x, pos.y, goal.x, goal.y);
     if (distanceToGoal < 5)
     {
@@ -114,9 +103,9 @@ class Dot {
   }
 
   //---------------------------------------------------------------------------------------------------------------------------------------
-  //clone it 
-  Dot clone() {
-    Dot baby = new Dot();
+  //clone it
+  Dot clone(PVector pos) {
+    Dot baby = new Dot(pos);
     baby.brain = brain.clone();//babies have the same brain as their parents
     baby.bestFitness = bestFitness;
     baby.fitness = fitness;
