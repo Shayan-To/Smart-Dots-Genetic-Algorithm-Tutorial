@@ -19,7 +19,7 @@ class Dot {
     brain = new Brain(1000);//new brain with 1000 instructions
 
     //start the dots at the bottom of the window with a no velocity or acceleration
-    pos = new PVector(width/2, height- 10);
+    pos = new PVector(width /2, height - 10);
     vel = new PVector(0, 0);
     acc = new PVector(0, 0);
   }
@@ -118,6 +118,8 @@ class Dot {
   Dot clone() {
     Dot baby = new Dot();
     baby.brain = brain.clone();//babies have the same brain as their parents
+    baby.bestFitness = bestFitness;
+    baby.fitness = fitness;
     return baby;
   }
 }

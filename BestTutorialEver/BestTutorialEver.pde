@@ -42,6 +42,7 @@ void draw() {
     //genetic algorithm
     test.naturalSelection();
     test.mutateDemBabies();
+    test.clearBestFitnesses();
   } else {
     //if any of the dots are still alive then update and then show them
     test.update();

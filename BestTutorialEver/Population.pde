@@ -125,20 +125,46 @@ class Population {
   }
 
   //------------------------------------------------------------------------------------------------------------------------------------------
+  //sort all the dots based on bestFitness
+  void sortDots(boolean best) {
+    java.util.Comparator<Dot> cmp;
+    if (best)
+    {
+      cmp = new java.util.Comparator<Dot>() {
+        @Override
+        public int compare(Dot a, Dot b) {
+          return -Float.compare(a.bestFitness, b.bestFitness);
+        }
+      };
+    }
+    else
+    {
+      cmp = new java.util.Comparator<Dot>() {
+        @Override
+        public int compare(Dot a, Dot b) {
+          return -Float.compare(a.fitness, b.fitness);
+        }
+      };
+    }
+    java.util.Arrays.sort(dots, cmp);
+  }
+
+  //------------------------------------------------------------------------------------------------------------------------------------------
   //mutates all the brains of the babies
   void mutateDemBabies() {
-    float[] fs = new float[dots.length];
-    for (int i = 0; i < dots.length; i++)
+    this.sortDots(true);
+    for (int i = 50; i < dots.length; i++)
     {
-      fs[i] = dots[i].bestFitness;
+      dots[i].brain.mutate();
     }
-    fs = reverse(sort(fs));
+  }
+
+  //------------------------------------------------------------------------------------------------------------------------------------------
+  //sets 0 to bestFitness of all dots
+  void clearBestFitnesses() {
     for (int i = 0; i < dots.length; i++)
     {
-      if (dots[i].bestFitness > fs[50])
-      {
-        dots[i].brain.mutate();
-      }
+      dots[i].bestFitness = 0;
     }
   }
 
