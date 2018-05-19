@@ -21,9 +21,6 @@ class World {
   float stepConst = 300;
   int gen = 1;
 
-  int bestDot = 0; //the index of the best dot in the dots[]
-  int bestBFDot = 0; //the index of the best dot in terms of betsFitness in the dots[]
-
   World(int dotsCount, int obstaclesCount) {
     dots = new Dot[dotsCount];
     obstacles = new Rectangle[obstaclesCount];
