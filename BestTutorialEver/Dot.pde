@@ -72,7 +72,7 @@ class Dot {
     {
       distanceToGoal = goal.r();
     }
-    fitness = 10.0 / distanceToGoal;
+    fitness = goal.r() / distanceToGoal;
     if (distanceToGoal < 100)
     {
       fitness += stepConst / step;
@@ -92,7 +92,7 @@ class Dot {
       distanceToGoal = goal.r();
     }
     print("[");
-    print(10.0 / distanceToGoal);
+    print(goal.r() / distanceToGoal);
     if (distanceToGoal < 100) {
       print("+");
       print(stepConst / step);

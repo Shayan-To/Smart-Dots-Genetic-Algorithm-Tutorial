@@ -121,7 +121,7 @@ class Population {
     for (int i = 0; i< dots.length; i++) {
       sum += dots[i].step;
     }
-    return sum / dots.length * 2.5;
+    return sum / dots.length * 0.7;
   }
 
   //------------------------------------------------------------------------------------------------------------------------------------
