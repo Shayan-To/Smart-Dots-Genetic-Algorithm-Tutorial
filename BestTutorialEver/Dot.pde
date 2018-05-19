@@ -63,6 +63,34 @@ class Dot {
     pos.add(vel);
   }
 
+  //-------------------------------------------------------------------------------------------------------------------
+  //calls the move function and check for collisions and stuff
+  void update()
+  {
+    if (!this.dead && !this.reachedGoal) {
+      this.move();
+      this.calculateFitness();
+
+      if (!this.world.screenRect.isInside(this.pos)) {//if near the edges of the window then kill it
+        this.dead = true;
+        return;
+      }
+      if (this.world.goal.isInside(this.pos)) {//if reached goal
+        this.reachedGoal = true;
+        return;
+      }
+
+      for (int j = 0; j < this.world.obstacles.length; j++)
+      {
+        if (this.world.obstacles[j].isInside(this.pos)) //if hit obstacle
+        {
+          this.dead = true;
+          return;
+        }
+      }
+    }
+  }
+
   //--------------------------------------------------------------------------------------------------------------------------------------
   //calculates the fitness
   void calculateFitness() {

@@ -90,37 +90,7 @@ class World {
   //update all dots
   void update() {
     for (int i = 0; i< dots.length; i++) {
-      Dot d = dots[i];
-      if (!d.dead && !d.reachedGoal) {
-        d.move();
-
-        if (!screenRect.isInside(d.pos)) {//if near the edges of the window then kill it
-          d.dead = true;
-          continue;
-        }
-        if (goal.isInside(d.pos)) {//if reached goal
-          d.reachedGoal = true;
-        }
-
-        for (int j = 0; j < obstacles.length; j++)
-        {
-          if (obstacles[j].isInside(d.pos)) //if hit obstacle
-          {
-            d.dead = true;
-            break;
-          }
-        }
-      }
-    }
-
-    calculateFitness();
-  }
-
-  //-----------------------------------------------------------------------------------------------------------------------------------
-  //calculate all the fitnesses
-  void calculateFitness() {
-    for (int i = 0; i< dots.length; i++) {
-      dots[i].calculateFitness();
+      this.dots[i].update();
     }
   }
 
