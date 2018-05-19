@@ -8,6 +8,7 @@ class Dot {
   int step = 0;
 
   boolean dead = false;
+  boolean enteredForbiddenArea = false;
 
   int mode = 0;
 
@@ -87,6 +88,18 @@ class Dot {
           return;
         }
       }
+
+      for (int i = 0; i < this.world.forbiddenAreas.size(); i++)
+      {
+        if (this.world.forbiddenAreas.get(i).isInside(this.pos))
+        {
+          this.enteredForbiddenArea = true;
+          this.dead = true;
+          this.fitness = 0;
+          this.bestFitness = 0;
+          break;
+        }
+      }
     }
   }
 
@@ -106,6 +119,7 @@ class Dot {
       // (stepConst = averageSteps * 0.7)
       this.fitness += this.world.stepConst / this.step;
     }
+
     if (this.bestFitness < this.fitness)
     {
       this.bestFitness = this.fitness;
