@@ -8,7 +8,6 @@ class Dot {
   int step = 0;
 
   boolean dead = false;
-  boolean reachedGoal = false;
 
   int mode = 0;
 
@@ -67,7 +66,7 @@ class Dot {
   //calls the move function and check for collisions and stuff
   void update()
   {
-    if (!this.dead && !this.reachedGoal) {
+    if (!this.dead) {
       this.move();
       this.calculateFitness();
 
@@ -76,7 +75,7 @@ class Dot {
         return;
       }
       if (this.world.goal.isInside(this.pos)) {//if reached goal
-        this.reachedGoal = true;
+        this.dead = true;
         return;
       }
 

@@ -105,7 +105,7 @@ class World {
   //returns whether all the dots are either dead or have reached the goal
   boolean allDotsDead() {
     for (int i = 0; i< dots.length; i++) {
-      if (!dots[i].dead && !dots[i].reachedGoal) {
+      if (!dots[i].dead) {
         return false;
       }
     }
