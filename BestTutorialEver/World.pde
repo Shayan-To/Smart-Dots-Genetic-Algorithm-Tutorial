@@ -18,6 +18,9 @@ class World {
   final float previousPositionsForbiddenRadius = 25;
   final Circle goalMarginedCircle = (Circle) new Circle().setFromCenterSize(goal.cx(), goal.cy(), 100 * 4 / PI);
 
+  final Circle currentPreviousPositionsCircle = new Circle();
+  final Circle currentPreviousPositionsForbiddenCircle = new Circle();
+
   Dot[] dots;
   Rectangle[] obstacles;
   final java.util.ArrayList<Circle> forbiddenAreas = new java.util.ArrayList<Circle>();
@@ -68,9 +71,10 @@ class World {
   //------------------------------------------------------------------------------------------------------------------------------
   //show all dots
   void show() {
-    //draw goal
-    fill(255, 0, 0);
-    goal.draw();
+    fill(255, 240, 240);
+    currentPreviousPositionsCircle.draw();
+    fill(255, 200, 200);
+    currentPreviousPositionsForbiddenCircle.draw();
 
     fill(255, 0, 0);
     for (int i = 0; i < forbiddenAreas.size(); i++)
@@ -84,11 +88,22 @@ class World {
       obstacles[i].draw();
     }
 
+    fill(255, 0, 0);
+    for (int i = 0; i < previousBestPositions.size(); i++)
+    {
+      PVector p = previousBestPositions.get(i);
+      ellipse(p.x, p.y, 6, 6);
+    }
+
+    fill(255, 0, 0);
+    goal.draw();
+
     for (int i = 0; i < dots.length; i++) {
       if (dots[i].mode == 0) {
         dots[i].show();
       }
     }
+
     for (int i = 0; i < dots.length; i++) {
       if (dots[i].mode != 0) {
         dots[i].show();
@@ -199,32 +214,35 @@ class World {
     this.previousBestPositions.add(this.dots[0].pos);
 
     // calculate the possible new forbidden area
-    if (this.gen >= 9)
+    PVector t = new PVector();
+    int size = this.previousBestPositions.size();
+    int cnt = min(size, 10);
+    for (int i = 0; i < cnt; i++)
     {
-      PVector t = new PVector();
-      for (int i = 0; i < 10; i++)
-      {
-        t.add(previousBestPositions.get(this.gen - i));
-      }
-      t.div(10);
+      t.add(this.previousBestPositions.get(size - 1 - i));
+    }
+    t.div(cnt);
 
-      float radius = 0;
-      for (int i = 0; i < 10; i++)
+    float radius = 0;
+    for (int i = 0; i < cnt; i++)
+    {
+      float d = t.dist(this.previousBestPositions.get(size - 1 - i));
+      if (radius < d)
       {
-        float d = t.dist(previousBestPositions.get(this.gen - i));
-        if (radius < d)
-        {
-          radius = d;
-        }
+        radius = d;
       }
+    }
 
-      if (radius <= previousPositionsForbiddenRadius)
+    this.currentPreviousPositionsCircle.setFromCenterSize(t.x, t.y, radius);
+    this.currentPreviousPositionsForbiddenCircle.setFromCenterSize(t.x, t.y, previousPositionsForbiddenRadius);
+
+    if (cnt == 10 & radius <= previousPositionsForbiddenRadius)
+    {
+      Circle forbiddenArea = (Circle) new Circle().setFromCenterSize(t.x, t.y, forbiddenAreaRadius);
+      if (!goalMarginedCircle.overlaps(forbiddenArea))
       {
-        Circle forbiddenArea = (Circle) new Circle().setFromCenterSize(t.x, t.y, forbiddenAreaRadius);
-        if (!goalMarginedCircle.overlaps(forbiddenArea))
-        {
-          forbiddenAreas.add(forbiddenArea);
-        }
+        forbiddenAreas.add(forbiddenArea);
+        previousBestPositions.clear();
       }
     }
 
