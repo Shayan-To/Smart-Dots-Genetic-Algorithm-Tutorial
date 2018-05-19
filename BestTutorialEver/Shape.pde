@@ -9,6 +9,15 @@ abstract class Shape
     return this;
   }
 
+  Shape set(Shape s)
+  {
+    this.x = s.x;
+    this.y = s.y;
+    this.w = s.w;
+    this.h = s.h;
+    return this;
+  }
+
   Shape setFromSides(float x, float y, float rx, float ry)
   {
     set(x, y, rx - x, ry - y);
