@@ -1,7 +1,4 @@
 class World {
-  Dot[] dots;
-  Rectangle[] obstacles;
-
   final int brainSize = 1000;
   final Rectangle screenRect = new Rectangle(2, 2, width - 4, height - 4);
   final Circle goal  = (Circle) new Circle().setFromCenterSize(400, 10, 5);
@@ -16,6 +13,9 @@ class World {
                                                    screenRect.w() - obstacleAreaMargin * 2, screenRect.h() - obstacleAreaMargin * 2);
 
   final Circle stepCountingArea = (Circle) new Circle().setFromCenterSize(goal.cx(), goal.cy(), 100);
+
+  Dot[] dots;
+  Rectangle[] obstacles;
 
   float fitnessSum;
   float stepConst = 300;
