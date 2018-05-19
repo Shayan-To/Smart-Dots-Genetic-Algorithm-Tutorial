@@ -184,6 +184,16 @@ class World {
         newDots[sz++] = t;
       }
 
+      // the dots are already sorted by fitness
+      // add a tenth copies of the best
+      // we want to forbid the area, so we have to be sure that it is a bad one
+      for (int j = 0; j < newDots.length / 10; j++)
+      {
+        Dot t = dots[0].clone();
+        t.brain.mutate(0.01);
+        newDots[sz++] = t;
+      }
+
       int third = (newDots.length - sz) / 3;
       for (int j = 0; j < third; j++) {
         //select a parent based on fitness and get a baby from them
@@ -205,6 +215,7 @@ class World {
       }
     }
 
+    // the dots are already sorted by fitness
     this.previousBestPositions.add(this.dots[0].pos);
     this.calculateForbiddenArea();
 
