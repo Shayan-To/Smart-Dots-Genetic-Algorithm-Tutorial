@@ -212,8 +212,16 @@ class World {
     }
 
     this.previousBestPositions.add(this.dots[0].pos);
+    this.calculateForbiddenArea();
 
-    // calculate the possible new forbidden area
+    this.dots = newDots;
+    this.gen++;
+  }
+
+  //--------------------------------------------------------------------------------------------------------------------------------------
+  // calculate the possible new forbidden area
+  void calculateForbiddenArea()
+  {
     PVector t = new PVector();
     int size = this.previousBestPositions.size();
     int cnt = min(size, 10);
@@ -245,9 +253,6 @@ class World {
         previousBestPositions.clear();
       }
     }
-
-    this.dots = newDots;
-    this.gen++;
   }
 
   //--------------------------------------------------------------------------------------------------------------------------------------
