@@ -147,7 +147,7 @@ class World {
     calculateFitnessSum();
 
     {
-      int i = 0;
+      int sz = 0;
       java.util.HashSet<Dot> enteredDots = new java.util.HashSet<Dot>();
 
       this.sortDots(true);
@@ -159,8 +159,7 @@ class World {
         {
           t.mode = 1;
         }
-        newDots[i] = t;
-        i++;
+        newDots[sz++] = t;
       }
 
       this.sortDots(false);
@@ -175,39 +174,34 @@ class World {
         {
           t.mode = 2;
         }
-        newDots[i] = t;
-        i++;
+        newDots[sz++] = t;
       }
 
       for (int j = 0; j < newDots.length / 10; j++)
       {
         Dot t = new Dot(this, brainSize);
         t.brain.randomize();
-        newDots[i] = t;
-        i++;
+        newDots[sz++] = t;
       }
 
-      int third = (newDots.length - i) / 3;
+      int third = (newDots.length - sz) / 3;
       for (int j = 0; j < third; j++) {
         //select a parent based on fitness and get a baby from them
         Dot t = selectParent().clone();
         t.brain.mutate(0.01);
-        newDots[i] = t;
-        i++;
+        newDots[sz++] = t;
       }
       for (int j = 0; j < third; j++) {
         //select a parent based on fitness and get a baby from them
         Dot t = selectParent().clone();
         t.brain.mutate(0.05);
-        newDots[i] = t;
-        i++;
+        newDots[sz++] = t;
       }
-      for (; i < newDots.length; ) {
+      for (; sz < newDots.length; ) {
         //select a parent based on fitness and get a baby from them
         Dot t = selectParent().clone();
         t.brain.mutate(0.1);
-        newDots[i] = t;
-        i++;
+        newDots[sz++] = t;
       }
     }
 
