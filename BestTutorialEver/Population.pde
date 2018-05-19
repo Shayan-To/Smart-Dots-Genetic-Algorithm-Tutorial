@@ -4,16 +4,15 @@ class Population {
 
   Rectangle screenRect = new Rectangle(2, 2, width - 4, height - 4);
   PVector goal  = new PVector(400, 10);
-  PVector startPoint = new PVector(screenRect.w / 2, screenRect.h - 10);
-  Rectangle goalRect = new Rectangle(goal.x - 5, goal.y - 5, 10, 10);
+  PVector startPoint = new PVector(screenRect.w() / 2, screenRect.h() - 10);
 
   Rectangle goalMarginedRect = new Rectangle(goal.x - 50, goal.y - 50, 100, 100);
   Rectangle startMarginedRect = new Rectangle(startPoint.x - 50, startPoint.y - 50, 100, 100);
   int obstacleAreaMargin = 5;
   int obstacleMinSize = 50;
   int obstacleMaxSize = 200;
-  Rectangle obstacleAreaRect = new Rectangle(screenRect.x + obstacleAreaMargin, screenRect.y + obstacleAreaMargin,
-                                             screenRect.w - obstacleAreaMargin * 2, screenRect.h - obstacleAreaMargin * 2);
+  Rectangle obstacleAreaRect = new Rectangle(screenRect.x() + obstacleAreaMargin, screenRect.y() + obstacleAreaMargin,
+                                             screenRect.w() - obstacleAreaMargin * 2, screenRect.h() - obstacleAreaMargin * 2);
 
   float fitnessSum;
   int gen = 1;
@@ -33,8 +32,8 @@ class Population {
     {
       float w = random(obstacleMaxSize - obstacleMinSize) + obstacleMinSize;
       float h = random(obstacleMaxSize - obstacleMinSize) + obstacleMinSize;
-      Rectangle o = new Rectangle(random(obstacleAreaRect.w - w) + obstacleAreaRect.x,
-                                  random(obstacleAreaRect.h - h) + obstacleAreaRect.y,
+      Rectangle o = new Rectangle(random(obstacleAreaRect.w() - w) + obstacleAreaRect.x(),
+                                  random(obstacleAreaRect.h() - h) + obstacleAreaRect.y(),
                                   w, h);
 
       float occupiedArea = 0;
