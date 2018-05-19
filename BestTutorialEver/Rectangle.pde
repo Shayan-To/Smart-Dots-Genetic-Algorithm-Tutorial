@@ -36,22 +36,20 @@ class Rectangle
 
   boolean isInside(float x, float y)
   {
-    if (x < this.x | this.rx() < x |
-        y < this.y | this.ry() < y)
-    {
-      return false;
-    }
-    return true;
+    return this.x <= x & x <= this.rx() &
+           this.y <= y & y <= this.ry();
+  }
+
+  boolean isInside(Rectangle r)
+  {
+    return this.x <= r.x & r.rx() <= this.rx() &
+           this.y <= r.y & r.ry() <= this.ry();
   }
 
   boolean overlaps(Rectangle r)
   {
-    if (r.rx() < this.x | this.rx() < r.x |
-        r.ry() < this.y | this.ry() < r.y)
-    {
-      return false;
-    }
-    return true;
+    return !(r.rx() < this.x | this.rx() < r.x |
+             r.ry() < this.y | this.ry() < r.y);
   }
 
   Rectangle intersection(Rectangle r)
@@ -67,6 +65,11 @@ class Rectangle
   float area()
   {
     return this.w * this.h;
+  }
+
+  float perimeter()
+  {
+    return (this.w + this.h) * 2;
   }
 
   float rx()
