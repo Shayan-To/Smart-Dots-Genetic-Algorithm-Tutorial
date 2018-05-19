@@ -34,7 +34,7 @@ class Population {
       float w = random(obstacleMaxSize - obstacleMinSize) + obstacleMinSize;
       float h = random(obstacleMaxSize - obstacleMinSize) + obstacleMinSize;
       Rectangle o = new Rectangle(random(obstacleAreaRect.w - w) + obstacleAreaRect.x,
-                                  random(height - 200) + 50,
+                                  random(obstacleAreaRect.h - h) + obstacleAreaRect.y,
                                   w, h);
 
       float occupiedArea = 0;
@@ -138,39 +138,82 @@ class Population {
 
   //-------------------------------------------------------------------------------------------------------------------------------------
   //gets the next generation of dots
-  void naturalSelection() {
+  void breedNextGeneration() {
     Dot[] newDots = new Dot[dots.length];//next gen
-    setBestDot();
     calculateFitnessSum();
     float stepConst = calculateStepConst();
 
     {
       int i = 0;
-      //the champion lives on
-      newDots[i] = dots[bestDot].clone(startPoint);
-      newDots[i].mode = 1;
-      i++;
-      newDots[i] = dots[bestBFDot].clone(startPoint);
-      newDots[i].mode = 2;
-      i++;
-      for (int j = 0; j < 100; j++)
+      java.util.HashSet<Dot> enteredDots = new java.util.HashSet<Dot>();
+
+      this.sortDots(true);
+      for (int j = 0; j < newDots.length / 10; j++)
       {
-        newDots[i] = new Dot(startPoint, 1000);
-        newDots[i].brain.randomize();
+        enteredDots.add(dots[j]);
+        Dot t = dots[j].clone(startPoint);
+        if (j == 0)
+        {
+          t.mode = 1;
+        }
+        newDots[i] = t;
         i++;
       }
-      for (; i < newDots.length; i++) {
-        //select parent based on fitness
-        Dot parent = selectParent();
-        //get baby from them
-        newDots[i] = parent.clone(startPoint);
+
+      this.sortDots(false);
+      for (int j = 0; j < newDots.length / 10; j++)
+      {
+        if (!enteredDots.add(dots[j]))
+        {
+          continue;
+        }
+        Dot t = dots[j].clone(startPoint);
+        if (j == 0)
+        {
+          t.mode = 2;
+        }
+        newDots[i] = t;
+        i++;
+      }
+
+      for (int j = 0; j < newDots.length / 10; j++)
+      {
+        Dot t = new Dot(startPoint, 1000);
+        t.brain.randomize();
+        newDots[i] = t;
+        i++;
+      }
+
+      int third = (newDots.length - i) / 3;
+      for (int j = 0; j < third; j++) {
+        //select a parent based on fitness and get a baby from them
+        Dot t = selectParent().clone(startPoint);
+        t.brain.mutate(0.01);
+        newDots[i] = t;
+        i++;
+      }
+      for (int j = 0; j < third; j++) {
+        //select a parent based on fitness and get a baby from them
+        Dot t = selectParent().clone(startPoint);
+        t.brain.mutate(0.05);
+        newDots[i] = t;
+        i++;
+      }
+      for (; i < newDots.length; ) {
+        //select a parent based on fitness and get a baby from them
+        Dot t = selectParent().clone(startPoint);
+        t.brain.mutate(0.1);
+        newDots[i] = t;
+        i++;
       }
     }
+
     for (int i = 0; i< newDots.length; i++) {
       newDots[i].stepConst = stepConst;
     }
 
-    dots = newDots.clone();
+    dots = newDots;
+    gen++;
   }
 
   //--------------------------------------------------------------------------------------------------------------------------------------
@@ -227,46 +270,5 @@ class Population {
       };
     }
     java.util.Arrays.sort(dots, cmp);
-  }
-
-  //------------------------------------------------------------------------------------------------------------------------------------------
-  //mutates all the brains of the babies
-  void mutateDemBabies() {
-    this.sortDots(true);
-    for (int i = 100; i < dots.length; i++)
-    {
-      dots[i].brain.mutate();
-    }
-  }
-
-  //------------------------------------------------------------------------------------------------------------------------------------------
-  //sets 0 to bestFitness of all dots
-  void clearBestFitnesses() {
-    for (int i = 0; i < dots.length; i++)
-    {
-      dots[i].bestFitness = 0;
-    }
-  }
-
-  //---------------------------------------------------------------------------------------------------------------------------------------------
-  //finds the dot with the highest fitness and sets it as the best dot
-  void setBestDot() {
-    float max = 0;
-    float maxBF = 0;
-    int maxIndex = 0;
-    int maxBFIndex = 0;
-    for (int i = 0; i < dots.length; i++) {
-      if (dots[i].fitness > max) {
-        max = dots[i].fitness;
-        maxIndex = i;
-      }
-      if (dots[i].bestFitness > maxBF) {
-        maxBF = dots[i].bestFitness;
-        maxBFIndex = i;
-      }
-    }
-
-    bestDot = maxIndex;
-    bestBFDot = maxBFIndex;
   }
 }

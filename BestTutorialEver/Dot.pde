@@ -107,8 +107,6 @@ class Dot {
   Dot clone(PVector pos) {
     Dot baby = new Dot(pos);
     baby.brain = brain.clone();//babies have the same brain as their parents
-    baby.bestFitness = bestFitness;
-    baby.fitness = fitness;
     return baby;
   }
 }
