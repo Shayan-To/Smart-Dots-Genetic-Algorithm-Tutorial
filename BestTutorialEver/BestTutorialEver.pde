@@ -4,7 +4,7 @@ void setup() {
   size(800, 600); //size of the window
   frameRate(100);//increase this to make the dots go faster
   randomSeed(5366);
-  test = new Population(1000, 20);//create a new population with 1000 dots and 10 obstacles
+  test = new Population(1000, 10);//create a new population with 1000 dots and 10 obstacles
 }
 
 void draw() {

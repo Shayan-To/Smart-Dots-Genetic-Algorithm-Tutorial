@@ -36,11 +36,18 @@ class Population {
       Rectangle o = new Rectangle(random(obstacleAreaRect.w - w) + obstacleAreaRect.x,
                                   random(height - 200) + 50,
                                   w, h);
-      if (goalMarginedRect.overlaps(o) | startMarginedRect.overlaps(o))
+
+      float occupiedArea = 0;
+      for (int j = 0; j < i; j++)
+      {
+        occupiedArea += obstacles[j].intersection(o).area();
+      }
+      if (goalMarginedRect.overlaps(o) | startMarginedRect.overlaps(o) | occupiedArea / o.area() > 0.2)
       {
         i--;
         continue;
       }
+
       obstacles[i] = o;
     }
   }
