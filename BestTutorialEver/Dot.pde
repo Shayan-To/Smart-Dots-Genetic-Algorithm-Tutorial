@@ -40,7 +40,7 @@ class Dot {
         size = 6;
         break;
       case 2:
-        fill(0, 0, 255);
+        fill(0, 255, 255);
         size = 6;
         break;
     }
