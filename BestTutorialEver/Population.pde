@@ -3,10 +3,10 @@ class Population {
   Rectangle[] obstacles;
 
   Rectangle screenRect = new Rectangle(2, 2, width - 4, height - 4);
-  PVector goal  = new PVector(400, 10);
+  Circle goal  = (Circle)new Circle().setFromCenterSize(400, 10, 5);
   PVector startPoint = new PVector(screenRect.w() / 2, screenRect.h() - 10);
 
-  Rectangle goalMarginedRect = new Rectangle(goal.x - 50, goal.y - 50, 100, 100);
+  Rectangle goalMarginedRect = new Rectangle(goal.cx() - 50, goal.cy() - 50, 100, 100);
   Rectangle startMarginedRect = new Rectangle(startPoint.x - 50, startPoint.y - 50, 100, 100);
   int obstacleAreaMargin = 5;
   int obstacleMinSize = 50;
@@ -56,7 +56,7 @@ class Population {
   void show() {
     //draw goal
     fill(255, 0, 0);
-    ellipse(goal.x, goal.y, 10, 10);
+    goal.draw();
 
     fill(0, 0, 255);
     for (int i = 0; i < obstacles.length; i++)
@@ -88,7 +88,7 @@ class Population {
           d.dead = true;
           continue;
         }
-        if (dist(d.pos.x, d.pos.y, goal.x, goal.y) < 5) {//if reached goal
+        if (goal.isInside(d.pos)) {//if reached goal
           d.reachedGoal = true;
         }
 

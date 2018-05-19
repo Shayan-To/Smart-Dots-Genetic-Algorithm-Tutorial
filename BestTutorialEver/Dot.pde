@@ -66,11 +66,11 @@ class Dot {
 
   //--------------------------------------------------------------------------------------------------------------------------------------
   //calculates the fitness
-  void calculateFitness(PVector goal) {
-    float distanceToGoal = dist(pos.x, pos.y, goal.x, goal.y);
-    if (distanceToGoal < 5)
+  void calculateFitness(Circle goal) {
+    float distanceToGoal = pos.dist(goal.center());
+    if (distanceToGoal < goal.r())
     {
-      distanceToGoal = 5;
+      distanceToGoal = goal.r();
     }
     fitness = 10.0 / distanceToGoal;
     if (distanceToGoal < 100)
@@ -85,11 +85,11 @@ class Dot {
 
   //--------------------------------------------------------------------------------------------------------------------------------------
   //print the fitness
-  void printFitness(PVector goal) {
-    float distanceToGoal = dist(pos.x, pos.y, goal.x, goal.y);
-    if (distanceToGoal < 5)
+  void printFitness(Circle goal) {
+    float distanceToGoal = pos.dist(goal.center());
+    if (distanceToGoal < goal.r())
     {
-      distanceToGoal = 5;
+      distanceToGoal = goal.r();
     }
     print("[");
     print(10.0 / distanceToGoal);
