@@ -1,43 +1,43 @@
-Population test;
+World world;
 
 void setup() {
   size(800, 600); //size of the window
   frameRate(100);//increase this to make the dots go faster
   randomSeed(5365);
-  test = new Population(1000, 15);//create a new population with 1000 dots and 10 obstacles
+  world = new World(1000, 15);//create a new population with 1000 dots and 10 obstacles
 }
 
 void draw() {
   background(255);
 
-  if (test.allDotsDead()) {
+  if (world.allDotsDead()) {
     println();
 
-    test.sortDots(true);
-    int bestStep = test.dots[0].step;
+    world.sortDots(true);
+    int bestStep = world.dots[0].step;
     for (int i = 0; i < 10; i++)
     {
-      print(test.dots[i].bestFitness, "  ");
+      print(world.dots[i].bestFitness, "  ");
     }
     println();
 
-    test.sortDots(false);
+    world.sortDots(false);
     for (int i = 0; i < 10; i++)
     {
-      Dot d = test.dots[i];
-      d.printFitness(test.goal);
+      Dot d = world.dots[i];
+      d.printFitness(world.goal);
     }
     println();
 
     println("best step:", bestStep);
 
     //genetic algorithm
-    test.breedNextGeneration();
+    world.breedNextGeneration();
 
-    println("generation:", test.gen);
+    println("generation:", world.gen);
   } else {
     //if any of the dots are still alive then update and then show them
-    test.update();
-    test.show();
+    world.update();
+    world.show();
   }
 }
