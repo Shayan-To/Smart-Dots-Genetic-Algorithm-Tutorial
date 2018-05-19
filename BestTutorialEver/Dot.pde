@@ -1,8 +1,9 @@
 class Dot {
-  PVector pos;
-  PVector vel;
-  PVector acc;
-  Brain brain;
+  final PVector pos = new PVector();
+  final PVector vel = new PVector();
+  final PVector acc = new PVector();
+  final Brain brain;
+  final World world;
 
   int step = 0;
 
@@ -13,19 +14,17 @@ class Dot {
 
   float fitness = 0;
   float bestFitness = 0;
-  float stepConst = 300;
 
-  private Dot(PVector pos) {
-    //start the dots at the bottom of the window with a no velocity or acceleration
-    this.pos = new PVector();
-    this.pos.set(pos);
-    vel = new PVector(0, 0);
-    acc = new PVector(0, 0);
+  Dot(World world, Brain brain)
+  {
+    this.world = world;
+    this.brain = brain;//new brain with brainSize instruction
+    this.pos.set(this.world.startPoint);
   }
 
-  Dot(PVector pos, int brainSize) {
-    this(pos);
-    brain = new Brain(brainSize);//new brain with brainSize instruction
+  Dot(World world, int brainSize)
+  {
+    this(world, new Brain(brainSize));//new brain with brainSize instruction
   }
 
   //-----------------------------------------------------------------------------------------------------------------
@@ -52,7 +51,7 @@ class Dot {
   //moves the dot according to the brains directions
   void move() {
     if (brain.directions.length > step) {//if there are still directions left then set the acceleration as the next PVector in the direcitons array
-      acc = brain.directions[step];
+      acc.set(brain.directions[step]);
       step++;
     } else {//if at the end of the directions array then the dot is dead
       dead = true;
@@ -66,47 +65,45 @@ class Dot {
 
   //--------------------------------------------------------------------------------------------------------------------------------------
   //calculates the fitness
-  void calculateFitness(Circle goal) {
-    float distanceToGoal = pos.dist(goal.center());
-    if (distanceToGoal < goal.r())
+  void calculateFitness() {
+    float distanceToGoal = pos.dist(this.world.goal.center());
+    if (distanceToGoal < this.world.goal.r())
     {
-      distanceToGoal = goal.r();
+      distanceToGoal = this.world.goal.r();
     }
-    fitness = goal.r() / distanceToGoal;
-    if (distanceToGoal < 100)
+    // between 0 and 1
+    this.fitness = this.world.goal.r() / distanceToGoal;
+    if (this.world.stepCountingArea.isInside(this.pos))
     {
-      fitness += stepConst / step;
+      // between 0 and maybe a bit less than 1
+      // (stepConst = averageSteps * 0.7)
+      this.fitness += this.world.stepConst / this.step;
     }
-    if (bestFitness < fitness)
+    if (this.bestFitness < this.fitness)
     {
-      bestFitness = fitness;
+      this.bestFitness = this.fitness;
     }
   }
 
   //--------------------------------------------------------------------------------------------------------------------------------------
   //print the fitness
-  void printFitness(Circle goal) {
-    float distanceToGoal = pos.dist(goal.center());
-    if (distanceToGoal < goal.r())
+  void printFitness() {
+    float distanceToGoal = this.pos.dist(this.world.goal.center());
+    if (distanceToGoal < this.world.goal.r())
     {
-      distanceToGoal = goal.r();
+      distanceToGoal = this.world.goal.r();
     }
-    print("[");
-    print(goal.r() / distanceToGoal);
-    if (distanceToGoal < 100) {
-      print("+");
-      print(stepConst / step);
+    print(String.format("[%.4f", this.world.goal.r() / distanceToGoal));
+    if (this.world.stepCountingArea.isInside(this.pos))
+    {
+      print(String.format("+%.4f", this.world.stepConst / this.step));
     }
-    print("=");
-    print(fitness);
-    print("]  ");
+    print(String.format("=%.4f]  ", this.fitness));
   }
 
   //---------------------------------------------------------------------------------------------------------------------------------------
   //clone it
-  Dot clone(PVector pos) {
-    Dot baby = new Dot(pos);
-    baby.brain = brain.clone();//babies have the same brain as their parents
-    return baby;
+  Dot clone() {
+    return new Dot(this.world, this.brain.clone()); // babies have the same brain as their parents
   }
 }

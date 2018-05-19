@@ -2,19 +2,23 @@ class World {
   Dot[] dots;
   Rectangle[] obstacles;
 
-  Rectangle screenRect = new Rectangle(2, 2, width - 4, height - 4);
-  Circle goal  = (Circle)new Circle().setFromCenterSize(400, 10, 5);
-  PVector startPoint = new PVector(screenRect.w() / 2, screenRect.h() - 10);
+  final int brainSize = 1000;
+  final Rectangle screenRect = new Rectangle(2, 2, width - 4, height - 4);
+  final Circle goal  = (Circle) new Circle().setFromCenterSize(400, 10, 5);
+  final PVector startPoint = new PVector(screenRect.w() / 2, screenRect.h() - 10);
 
-  Rectangle goalMarginedRect = new Rectangle(goal.cx() - 50, goal.cy() - 50, 100, 100);
-  Rectangle startMarginedRect = new Rectangle(startPoint.x - 50, startPoint.y - 50, 100, 100);
-  int obstacleAreaMargin = 5;
-  int obstacleMinSize = 50;
-  int obstacleMaxSize = 200;
-  Rectangle obstacleAreaRect = new Rectangle(screenRect.x() + obstacleAreaMargin, screenRect.y() + obstacleAreaMargin,
-                                             screenRect.w() - obstacleAreaMargin * 2, screenRect.h() - obstacleAreaMargin * 2);
+  final Rectangle goalMarginedRect = new Rectangle(goal.cx() - 50, goal.cy() - 50, 100, 100);
+  final Rectangle startMarginedRect = new Rectangle(startPoint.x - 50, startPoint.y - 50, 100, 100);
+  final int obstacleAreaMargin = 5;
+  final int obstacleMinSize = 50;
+  final int obstacleMaxSize = 200;
+  final Rectangle obstacleAreaRect = new Rectangle(screenRect.x() + obstacleAreaMargin, screenRect.y() + obstacleAreaMargin,
+                                                   screenRect.w() - obstacleAreaMargin * 2, screenRect.h() - obstacleAreaMargin * 2);
+
+  final Circle stepCountingArea = (Circle) new Circle().setFromCenterSize(goal.cx(), goal.cy(), 100);
 
   float fitnessSum;
+  float stepConst = 300;
   int gen = 1;
 
   int bestDot = 0; //the index of the best dot in the dots[]
@@ -22,13 +26,19 @@ class World {
 
   World(int dotsCount, int obstaclesCount) {
     dots = new Dot[dotsCount];
-    for (int i = 0; i < dotsCount; i++) {
-      dots[i] = new Dot(startPoint, 1000);
-      dots[i].brain.randomize();
+    obstacles = new Rectangle[obstaclesCount];
+  }
+
+  void init()
+  {
+    for (int i = 0; i < this.dots.length; i++)
+    {
+      Dot t = new Dot(this, brainSize);
+      t.brain.randomize();
+      this.dots[i] = t;
     }
 
-    obstacles = new Rectangle[obstaclesCount];
-    for (int i = 0; i < obstaclesCount; i++)
+    for (int i = 0; i < this.obstacles.length; i++)
     {
       float w = random(obstacleMaxSize - obstacleMinSize) + obstacleMinSize;
       float h = random(obstacleMaxSize - obstacleMinSize) + obstacleMinSize;
@@ -47,7 +57,7 @@ class World {
         continue;
       }
 
-      obstacles[i] = o;
+      this.obstacles[i] = o;
     }
   }
 
@@ -110,18 +120,18 @@ class World {
   //calculate all the fitnesses
   void calculateFitness() {
     for (int i = 0; i< dots.length; i++) {
-      dots[i].calculateFitness(goal);
+      dots[i].calculateFitness();
     }
   }
 
   //-----------------------------------------------------------------------------------------------------------------------------------
   //calculate the step constant to be set to all the dots
-  float calculateStepConst() {
+  void calculateStepConst() {
     float sum = 0;
     for (int i = 0; i< dots.length; i++) {
       sum += dots[i].step;
     }
-    return sum / dots.length * 0.7;
+    this.stepConst = sum / dots.length * 0.7;
   }
 
   //------------------------------------------------------------------------------------------------------------------------------------
@@ -140,7 +150,6 @@ class World {
   void breedNextGeneration() {
     Dot[] newDots = new Dot[dots.length];//next gen
     calculateFitnessSum();
-    float stepConst = calculateStepConst();
 
     {
       int i = 0;
@@ -150,7 +159,7 @@ class World {
       for (int j = 0; j < newDots.length / 10; j++)
       {
         enteredDots.add(dots[j]);
-        Dot t = dots[j].clone(startPoint);
+        Dot t = dots[j].clone();
         if (j == 0)
         {
           t.mode = 1;
@@ -166,7 +175,7 @@ class World {
         {
           continue;
         }
-        Dot t = dots[j].clone(startPoint);
+        Dot t = dots[j].clone();
         if (j == 0)
         {
           t.mode = 2;
@@ -177,7 +186,7 @@ class World {
 
       for (int j = 0; j < newDots.length / 10; j++)
       {
-        Dot t = new Dot(startPoint, 1000);
+        Dot t = new Dot(this, brainSize);
         t.brain.randomize();
         newDots[i] = t;
         i++;
@@ -186,29 +195,25 @@ class World {
       int third = (newDots.length - i) / 3;
       for (int j = 0; j < third; j++) {
         //select a parent based on fitness and get a baby from them
-        Dot t = selectParent().clone(startPoint);
+        Dot t = selectParent().clone();
         t.brain.mutate(0.01);
         newDots[i] = t;
         i++;
       }
       for (int j = 0; j < third; j++) {
         //select a parent based on fitness and get a baby from them
-        Dot t = selectParent().clone(startPoint);
+        Dot t = selectParent().clone();
         t.brain.mutate(0.05);
         newDots[i] = t;
         i++;
       }
       for (; i < newDots.length; ) {
         //select a parent based on fitness and get a baby from them
-        Dot t = selectParent().clone(startPoint);
+        Dot t = selectParent().clone();
         t.brain.mutate(0.1);
         newDots[i] = t;
         i++;
       }
-    }
-
-    for (int i = 0; i< newDots.length; i++) {
-      newDots[i].stepConst = stepConst;
     }
 
     dots = newDots;

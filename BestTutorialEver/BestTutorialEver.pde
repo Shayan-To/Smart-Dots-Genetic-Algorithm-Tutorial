@@ -5,6 +5,7 @@ void setup() {
   frameRate(100);//increase this to make the dots go faster
   randomSeed(5365);
   world = new World(1000, 15);//create a new population with 1000 dots and 10 obstacles
+  world.init();
 }
 
 void draw() {
@@ -17,7 +18,7 @@ void draw() {
     int bestStep = world.dots[0].step;
     for (int i = 0; i < 10; i++)
     {
-      print(world.dots[i].bestFitness, "  ");
+      print(String.format("%.4f  ", world.dots[i].bestFitness));
     }
     println();
 
@@ -25,7 +26,7 @@ void draw() {
     for (int i = 0; i < 10; i++)
     {
       Dot d = world.dots[i];
-      d.printFitness(world.goal);
+      d.printFitness();
     }
     println();
 
