@@ -241,19 +241,18 @@ class World {
 
   //--------------------------------------------------------------------------------------------------------------------------------------
   // calculate the possible new forbidden area
-  void calculateForbiddenArea()
+  Circle calculatePreviousPositionsCircle(int count)
   {
     PVector t = new PVector();
     int size = this.previousBestPositions.size();
-    int cnt = min(size, 10);
-    for (int i = 0; i < cnt; i++)
+    for (int i = 0; i < count; i++)
     {
       t.add(this.previousBestPositions.get(size - 1 - i));
     }
-    t.div(cnt);
+    t.div(count);
 
     float radius = 0;
-    for (int i = 0; i < cnt; i++)
+    for (int i = 0; i < count; i++)
     {
       float d = t.dist(this.previousBestPositions.get(size - 1 - i));
       if (radius < d)
@@ -262,12 +261,24 @@ class World {
       }
     }
 
-    this.currentPreviousPositionsCircle.setFromCenterSize(t.x, t.y, radius);
-    this.currentPreviousPositionsForbiddenCircle.setFromCenterSize(t.x, t.y, previousPositionsForbiddenRadius);
+    return (Circle) new Circle().setFromCenterSize(t.x, t.y, radius);
+  }
+
+  //--------------------------------------------------------------------------------------------------------------------------------------
+  // calculate the possible new forbidden area
+  void calculateForbiddenArea()
+  {
+    int size = this.previousBestPositions.size();
+    int count = min(size, 10);
+
+    Circle t = this.calculatePreviousPositionsCircle(count);
+
+    this.currentPreviousPositionsCircle.set(t);
+    this.currentPreviousPositionsForbiddenCircle.setFromCenterSize(t.cx(), t.cy(), previousPositionsForbiddenRadius);
 
     if (cnt == 10 & radius <= previousPositionsForbiddenRadius)
     {
-      Circle forbiddenArea = (Circle) new Circle().setFromCenterSize(t.x, t.y, forbiddenAreaRadius);
+      Circle forbiddenArea = (Circle) new Circle().setFromCenterSize(t.cx(), t.cy(), forbiddenAreaRadius);
       if (!forbiddenAreasForbiddenCircle.overlaps(forbiddenArea))
       {
         forbiddenAreas.add(forbiddenArea);
