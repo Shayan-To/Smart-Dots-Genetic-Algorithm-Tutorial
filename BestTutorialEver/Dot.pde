@@ -9,6 +9,7 @@ class Dot {
 
   boolean dead = false;
   boolean enteredForbiddenArea = false;
+  boolean reachedGoal = false;
 
   int mode = 0;
 
@@ -76,6 +77,7 @@ class Dot {
         return;
       }
       if (this.world.goal.isInside(this.pos)) {//if reached goal
+        this.reachedGoal = true;
         this.dead = true;
         return;
       }
