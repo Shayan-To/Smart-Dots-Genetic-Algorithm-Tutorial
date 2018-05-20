@@ -119,7 +119,7 @@ class Dot
     // calculates the fitness
     void calculateFitness()
     {
-        float distanceToGoal = pos.dist(this.world.goal.center());
+        float distanceToGoal = pos.dist(this.world.goalCenter);
         if (distanceToGoal < this.world.goal.r())
         {
             distanceToGoal = this.world.goal.r();
@@ -133,8 +133,7 @@ class Dot
         stepCoef = min(max(stepCoef, 0), 1);
 
         // between 0 and maybe a bit less than 1
-        // (stepConst = averageSteps * 0.7)
-        float stepReward = this.world.stepConst / this.step;
+        float stepReward = this.world.averageStep * 0.7 / this.step;
 
         this.fitness = distanceReward + stepReward * stepCoef;
 
@@ -148,7 +147,7 @@ class Dot
     // print the fitness
     void printFitness()
     {
-        float distanceToGoal = this.pos.dist(this.world.goal.center());
+        float distanceToGoal = this.pos.dist(this.world.goalCenter);
         if (distanceToGoal < this.world.goal.r())
         {
             distanceToGoal = this.world.goal.r();
@@ -162,8 +161,7 @@ class Dot
         stepCoef = min(max(stepCoef, 0), 1);
 
         // between 0 and maybe a bit less than 1
-        // (stepConst = averageSteps * 0.7)
-        float stepReward = this.world.stepConst / this.step;
+        float stepReward = this.world.averageStep * 0.7 / this.step;
 
         print(String.format("[%.4f + %.2f*%.4f = %.4f]  ", distanceReward, stepCoef, stepReward, this.fitness));
     }

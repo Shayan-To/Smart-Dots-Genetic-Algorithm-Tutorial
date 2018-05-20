@@ -3,6 +3,7 @@ class World
     final int brainSize = 1000;
     final Rectangle screenRect = new Rectangle(2, 2, width - 4, height - 4);
     final Circle goal  = (Circle) new Circle().setFromCenterSize(400, 10, 5);
+    final PVector goalCenter = goal.center();
     final PVector startPoint = new PVector(screenRect.w() / 2, screenRect.h() - 10);
 
     final Rectangle goalMarginedRect = (Rectangle) new Rectangle().setFromCenterSize(goal.cx(), goal.cy(), 50);
@@ -32,7 +33,8 @@ class World
     final java.util.ArrayList<PVector> previousBestPositions = new java.util.ArrayList<PVector>();
 
     float fitnessSum;
-    float stepConst = 300;
+    float averageStep = 300;
+    float averageDistance = 300;
     int gen = 0;
 
     World(int dotsCount, int obstaclesCount)
@@ -138,14 +140,17 @@ class World
 
     // --------------------------------------------------------------------------------------------------------------------------------
     // calculate the step constant to be set to all the dots
-    void calculateStepConst()
+    void calculateAverages()
     {
-        float sum = 0;
+        float sumStep = 0;
+        float sumDistance = 0;
         for (int i = 0; i< dots.length; i++)
         {
-            sum += dots[i].step;
+            sumStep += this.dots[i].step;
+            sumDistance += this.dots[i].pos.dist(this.goalCenter);
         }
-        this.stepConst = sum / dots.length * 0.7;
+        this.averageStep = sumStep / this.dots.length;
+        this.averageDistance = sumDistance / this.dots.length;
     }
 
     // --------------------------------------------------------------------------------------------------------------------------------
@@ -167,7 +172,7 @@ class World
     void breedNextGeneration()
     {
         Dot[] newDots = new Dot[dots.length]; // next gen
-        calculateFitnessSum();
+        this.calculateFitnessSum();
 
         {
             int sz = 0;
@@ -252,6 +257,8 @@ class World
         // the dots are already sorted by fitness
         this.previousBestPositions.add(this.dots[0].pos);
         this.calculateForbiddenArea();
+
+        this.calculateAverages();
 
         this.dots = newDots;
         this.gen++;
