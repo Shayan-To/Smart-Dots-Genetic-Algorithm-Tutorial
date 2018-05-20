@@ -84,7 +84,7 @@ class World {
     fill(255, 0, 0, 20);
     currentPreviousPositionsForbiddenCircle.draw();
 
-    fill(255, 0, 0);
+    fill(255, 0, 0, 150);
     for (int i = 0; i < forbiddenAreas.size(); i++)
     {
       forbiddenAreas.get(i).draw();
