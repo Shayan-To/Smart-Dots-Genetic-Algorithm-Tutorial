@@ -72,9 +72,9 @@ class World {
   //------------------------------------------------------------------------------------------------------------------------------
   //show all dots
   void show() {
-    fill(255, 240, 240);
+    fill(255, 0, 0, 20);
     currentPreviousPositionsCircle.draw();
-    fill(255, 200, 200);
+    fill(255, 0, 0, 20);
     currentPreviousPositionsForbiddenCircle.draw();
 
     fill(255, 0, 0);
@@ -83,7 +83,7 @@ class World {
       forbiddenAreas.get(i).draw();
     }
 
-    fill(0, 0, 255);
+    fill(0, 0, 255, 200);
     for (int i = 0; i < obstacles.length; i++)
     {
       obstacles[i].draw();
