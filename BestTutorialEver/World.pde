@@ -15,7 +15,7 @@ class World {
   final Circle stepCountingArea = (Circle) new Circle().setFromCenterSize(goal.cx(), goal.cy(), 100);
 
   final float forbiddenAreaRadius = 50;
-  final float previousPositionsForbiddenRadius = 25;
+  final float previousPositionsForbiddenRadius = 5;
   final Circle goalMarginedCircle = (Circle) new Circle().setFromCenterSize(goal.cx(), goal.cy(), 100 * 4 / PI);
 
   final Circle currentPreviousPositionsCircle = new Circle();
