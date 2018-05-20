@@ -5,6 +5,8 @@ class World
     final Circle goal  = (Circle) new Circle().setFromCenterSize(400, 10, 5);
     final PVector goalCenter = goal.center();
     final PVector startPoint = new PVector(screenRect.w() / 2, screenRect.h() - 10);
+    final float maxDistance = sqrt(width * width + height * height);
+    final float gridSize = 50;
 
     final Rectangle goalMarginedRect = (Rectangle) new Rectangle().setFromCenterSize(goal.cx(), goal.cy(), 50);
     final Rectangle startMarginedRect = (Rectangle) new Rectangle().setFromCenterSize(startPoint.x, startPoint.y, 50);
@@ -79,6 +81,8 @@ class World
     // show all dots
     void show()
     {
+        this.drawGrid();
+
         fill(0, 255, 0, 20);
         stepCountingMaxArea.draw();
         fill(0, 255, 0, 20);
@@ -126,6 +130,26 @@ class World
                 dots[i].show();
             }
         }
+    }
+
+    // --------------------------------------------------------------------------------------------------------------------------------
+    // draw a grid
+    void drawGrid()
+    {
+        stroke(230);
+        for (int i = (int) (this.maxDistance / this.gridSize) + 1; i > 0 ; i--)
+        {
+            if (i % 2 == 0)
+            {
+                fill(255);
+            }
+            else
+            {
+                fill(245);
+            }
+            ellipse(this.goalCenter.x, this.goalCenter.y, 2 * i * this.gridSize, 2 * i * this.gridSize);
+        }
+        stroke(0);
     }
 
     // --------------------------------------------------------------------------------------------------------------------------------
