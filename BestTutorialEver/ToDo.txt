@@ -1,0 +1,4 @@
+In the name of God
+
+- [ ] Maybe somehow species-based natural selection.
+- [ ] Maybe lowering the percentage of 0.1 and 0.05 's that are generated based on generation (generations from last forbidden area).
