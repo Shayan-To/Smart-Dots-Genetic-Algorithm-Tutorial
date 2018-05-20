@@ -2,3 +2,4 @@ In the name of God
 
 - [ ] Maybe somehow species-based natural selection.
 - [ ] Maybe lowering the percentage of 0.1 and 0.05 's that are generated based on generation (generations from last forbidden area).
+- [ ] Trying other tricks in fitness function, instead of "1 / distance" and "averageStep * 0.7 / stepCount". Like "(Max - value) / average * 0.7".
