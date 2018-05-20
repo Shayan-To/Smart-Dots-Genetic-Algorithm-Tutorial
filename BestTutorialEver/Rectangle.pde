@@ -34,13 +34,20 @@ class Rectangle extends Shape
                  r.ry() < this.y() | this.ry() < r.y());
     }
 
+    Rectangle intersectWith(Rectangle r)
+    {
+        this.setFromSides(max(this.x(), r.x()),
+                          max(this.y(), r.y()),
+                          min(this.rx(), r.rx()),
+                          min(this.ry(), r.ry()));
+        return this;
+    }
+
     Rectangle intersection(Rectangle r)
     {
         Rectangle res = new Rectangle();
-        res.setFromSides(max(this.x(), r.x()),
-                         max(this.y(), r.y()),
-                         min(this.rx(), r.rx()),
-                         min(this.ry(), r.ry()));
+        res.set(this);
+        res.intersectWith(r);
         return res;
     }
 
