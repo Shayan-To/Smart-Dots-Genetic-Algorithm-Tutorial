@@ -24,15 +24,27 @@ abstract class Shape
         return this;
     }
 
-    Shape setFromCenterSize(float cx, float cy, float rw, float rh)
+    Shape setFromCenterRadius(float cx, float cy, float rw, float rh)
     {
         set(cx - rw, cy - rh, rw * 2, rh * 2);
         return this;
     }
 
-    Shape setFromCenterSize(float cx, float cy, float r)
+    Shape setFromCenterRadius(float cx, float cy, float r)
     {
         set(cx - r, cy - r, r * 2, r * 2);
+        return this;
+    }
+
+    Shape setFromCenterSize(float cx, float cy, float w, float h)
+    {
+        set(cx - w / 2, cy - h / 2, w, h);
+        return this;
+    }
+
+    Shape setFromCenterSize(float cx, float cy, float d)
+    {
+        set(cx - d / 2, cy - d / 2, d, d);
         return this;
     }
 

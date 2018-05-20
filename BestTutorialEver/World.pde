@@ -2,14 +2,14 @@ class World
 {
     final int brainSize = 1000;
     final Rectangle screenRect = new Rectangle(2, 2, width - 4, height - 4);
-    final Circle goal  = (Circle) new Circle().setFromCenterSize(400, 10, 5);
+    final Circle goal  = (Circle) new Circle().setFromCenterRadius(400, 10, 5);
     final PVector goalCenter = goal.center();
     final PVector startPoint = new PVector(screenRect.w() / 2, screenRect.h() - 10);
     final float maxDistance = sqrt(width * width + height * height);
     final float gridSize = 50;
 
-    final Rectangle goalMarginedRect = (Rectangle) new Rectangle().setFromCenterSize(goal.cx(), goal.cy(), 50);
-    final Rectangle startMarginedRect = (Rectangle) new Rectangle().setFromCenterSize(startPoint.x, startPoint.y, 50);
+    final Rectangle goalMarginedRect = (Rectangle) new Rectangle().setFromCenterRadius(goal.cx(), goal.cy(), 50);
+    final Rectangle startMarginedRect = (Rectangle) new Rectangle().setFromCenterRadius(startPoint.x, startPoint.y, 50);
     final int obstacleAreaMargin = 5;
     final int obstacleMinSize = 50;
     final int obstacleMaxSize = 200;
@@ -17,9 +17,9 @@ class World
                                                      screenRect.w() - obstacleAreaMargin * 2, screenRect.h() - obstacleAreaMargin * 2);
 
     final float stepCountingMinRadius = 75;
-    final Circle stepCountingMinArea = (Circle) new Circle().setFromCenterSize(goal.cx(), goal.cy(), stepCountingMinRadius);
+    final Circle stepCountingMinArea = (Circle) new Circle().setFromCenterRadius(goal.cx(), goal.cy(), stepCountingMinRadius);
     final float stepCountingMaxRadius = 150;
-    final Circle stepCountingMaxArea = (Circle) new Circle().setFromCenterSize(goal.cx(), goal.cy(), stepCountingMaxRadius);
+    final Circle stepCountingMaxArea = (Circle) new Circle().setFromCenterRadius(goal.cx(), goal.cy(), stepCountingMaxRadius);
 
     final float forbiddenAreaRadius = 50;
     final float previousPositionsForbiddenRadius = 5;
@@ -320,7 +320,7 @@ class World
         {
             res = new Circle();
         }
-        return (Circle) res.setFromCenterSize(t.x, t.y, radius);
+        return (Circle) res.setFromCenterRadius(t.x, t.y, radius);
     }
 
     // --------------------------------------------------------------------------------------------------------------------------------
@@ -348,7 +348,7 @@ class World
 
         this.calculatePreviousPositionsCircle(min(size, 10), t);
         this.currentPreviousPositionsCircle.set(t);
-        this.currentPreviousPositionsForbiddenCircle.setFromCenterSize(t.cx(), t.cy(), previousPositionsForbiddenRadius);
+        this.currentPreviousPositionsForbiddenCircle.setFromCenterRadius(t.cx(), t.cy(), previousPositionsForbiddenRadius);
 
         Circle forbiddenArea = new Circle();
 
@@ -357,7 +357,7 @@ class World
             this.calculatePreviousPositionsCircle(10, t);
             if (t.r() <= previousPositionsForbiddenRadius)
             {
-                forbiddenArea.setFromCenterSize(t.cx(), t.cy(), forbiddenAreaRadius);
+                forbiddenArea.setFromCenterRadius(t.cx(), t.cy(), forbiddenAreaRadius);
                 if (!this.forbiddenAreasForbiddenCircle.overlaps(forbiddenArea) &&
                     this.countDotsIn(forbiddenArea) >= this.dots.length / 5)
                 {
@@ -372,7 +372,7 @@ class World
             this.calculatePreviousPositionsCircle(20, t);
             if (t.r() <= previousPositionsForbiddenRadius)
             {
-                forbiddenArea.setFromCenterSize(t.cx(), t.cy(), forbiddenAreaRadius);
+                forbiddenArea.setFromCenterRadius(t.cx(), t.cy(), forbiddenAreaRadius);
                 if (this.countDotsIn(forbiddenArea) >= this.dots.length / 5 &&
                     !this.goal.overlaps(forbiddenArea))
                 {
@@ -387,7 +387,7 @@ class World
             this.calculatePreviousPositionsCircle(20, t);
             if (t.r() <= previousPositionsForbiddenRadius)
             {
-                forbiddenArea.setFromCenterSize(t.cx(), t.cy(), forbiddenAreaRadius);
+                forbiddenArea.setFromCenterRadius(t.cx(), t.cy(), forbiddenAreaRadius);
                 if (!this.forbiddenAreasForbiddenCircle.overlaps(forbiddenArea) &&
                     this.countDotsIn(forbiddenArea) >= this.dots.length / 10 &&
                     !this.goal.overlaps(forbiddenArea))
@@ -403,7 +403,7 @@ class World
             this.calculatePreviousPositionsCircle(30, t);
             if (t.r() <= previousPositionsForbiddenRadius)
             {
-                forbiddenArea.setFromCenterSize(t.cx(), t.cy(), forbiddenAreaRadius);
+                forbiddenArea.setFromCenterRadius(t.cx(), t.cy(), forbiddenAreaRadius);
                 if (this.countDotsIn(forbiddenArea) >= this.dots.length / 10 &&
                     !this.goal.overlaps(forbiddenArea))
                 {
@@ -418,7 +418,7 @@ class World
             this.calculatePreviousPositionsCircle(30, t);
             if (t.r() <= previousPositionsForbiddenRadius)
             {
-                forbiddenArea.setFromCenterSize(t.cx(), t.cy(), forbiddenAreaRadius);
+                forbiddenArea.setFromCenterRadius(t.cx(), t.cy(), forbiddenAreaRadius);
                 if (!this.forbiddenAreasForbiddenCircle.overlaps(forbiddenArea) &&
                     !this.goal.overlaps(forbiddenArea))
                 {
@@ -433,7 +433,7 @@ class World
             this.calculatePreviousPositionsCircle(40, t);
             if (t.r() <= previousPositionsForbiddenRadius)
             {
-                forbiddenArea.setFromCenterSize(t.cx(), t.cy(), forbiddenAreaRadius);
+                forbiddenArea.setFromCenterRadius(t.cx(), t.cy(), forbiddenAreaRadius);
                 if (!this.goal.overlaps(forbiddenArea))
                 {
                     println(String.format("** New forbidden area created. 30 generations."));
