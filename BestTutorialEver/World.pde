@@ -349,7 +349,8 @@ class World
             if (t.r() <= previousPositionsForbiddenRadius)
             {
                 forbiddenArea.setFromCenterSize(t.cx(), t.cy(), forbiddenAreaRadius);
-                if (this.countDotsIn(forbiddenArea) >= this.dots.length / 5)
+                if (this.countDotsIn(forbiddenArea) >= this.dots.length / 5 &&
+                    !this.goal.overlaps(forbiddenArea))
                 {
                     println(String.format("** New forbidden area created. 20 generations, %d dots.", this.countDotsIn(forbiddenArea)));
                     return forbiddenArea;
@@ -364,7 +365,8 @@ class World
             {
                 forbiddenArea.setFromCenterSize(t.cx(), t.cy(), forbiddenAreaRadius);
                 if (!this.forbiddenAreasForbiddenCircle.overlaps(forbiddenArea) &&
-                    this.countDotsIn(forbiddenArea) >= this.dots.length / 10)
+                    this.countDotsIn(forbiddenArea) >= this.dots.length / 10 &&
+                    !this.goal.overlaps(forbiddenArea))
                 {
                     println(String.format("** New forbidden area created. 20 generations, %d dots, not near goal.", this.countDotsIn(forbiddenArea)));
                     return forbiddenArea;
@@ -378,7 +380,8 @@ class World
             if (t.r() <= previousPositionsForbiddenRadius)
             {
                 forbiddenArea.setFromCenterSize(t.cx(), t.cy(), forbiddenAreaRadius);
-                if (this.countDotsIn(forbiddenArea) >= this.dots.length / 10)
+                if (this.countDotsIn(forbiddenArea) >= this.dots.length / 10 &&
+                    !this.goal.overlaps(forbiddenArea))
                 {
                     println(String.format("** New forbidden area created. 30 generations, %d dots.", this.countDotsIn(forbiddenArea)));
                     return forbiddenArea;
@@ -392,7 +395,8 @@ class World
             if (t.r() <= previousPositionsForbiddenRadius)
             {
                 forbiddenArea.setFromCenterSize(t.cx(), t.cy(), forbiddenAreaRadius);
-                if (!this.forbiddenAreasForbiddenCircle.overlaps(forbiddenArea))
+                if (!this.forbiddenAreasForbiddenCircle.overlaps(forbiddenArea) &&
+                    !this.goal.overlaps(forbiddenArea))
                 {
                     println(String.format("** New forbidden area created. 30 generations, not near goal."));
                     return forbiddenArea;
@@ -406,7 +410,7 @@ class World
             if (t.r() <= previousPositionsForbiddenRadius)
             {
                 forbiddenArea.setFromCenterSize(t.cx(), t.cy(), forbiddenAreaRadius);
-                if (true)
+                if (!this.goal.overlaps(forbiddenArea))
                 {
                     println(String.format("** New forbidden area created. 30 generations."));
                     return forbiddenArea;
