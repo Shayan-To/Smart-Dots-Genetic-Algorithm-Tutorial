@@ -156,13 +156,13 @@ class World {
 
     {
       int sz = 0;
-      java.util.HashSet<Dot> enteredDots = new java.util.HashSet<Dot>();
+      java.util.HashMap<Dot, Dot> enteredDots = new java.util.HashMap<Dot, Dot>();
 
       this.sortDots(true);
       for (int j = 0; j < newDots.length / 10; j++)
       {
-        enteredDots.add(dots[j]);
         Dot t = dots[j].clone();
+        enteredDots.put(dots[j], t);
         if (j == 0)
         {
           t.mode = 1;
@@ -173,8 +173,16 @@ class World {
       this.sortDots(false);
       for (int j = 0; j < newDots.length / 10; j++)
       {
-        if (!enteredDots.add(dots[j]))
+        if (enteredDots.containsKey(dots[j]))
         {
+          if (j == 0)
+          {
+            Dot t = enteredDots.get(dots[j]);
+            if (t.mode == 0)
+            {
+              t.mode = 2;
+            }
+          }
           continue;
         }
         Dot t = dots[j].clone();
