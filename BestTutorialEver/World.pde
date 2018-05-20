@@ -13,7 +13,9 @@ class World {
                                                    screenRect.w() - obstacleAreaMargin * 2, screenRect.h() - obstacleAreaMargin * 2);
 
   final float stepCountingMinRadius = 75;
+  final Circle stepCountingMinArea = (Circle) new Circle().setFromCenterSize(goal.cx(), goal.cy(), stepCountingMinRadius);
   final float stepCountingMaxRadius = 150;
+  final Circle stepCountingMaxArea = (Circle) new Circle().setFromCenterSize(goal.cx(), goal.cy(), stepCountingMaxRadius);
 
   final float forbiddenAreaRadius = 50;
   final float previousPositionsForbiddenRadius = 5;
@@ -72,6 +74,11 @@ class World {
   //------------------------------------------------------------------------------------------------------------------------------
   //show all dots
   void show() {
+    fill(0, 255, 0, 20);
+    stepCountingMaxArea.draw();
+    fill(0, 255, 0, 20);
+    stepCountingMinArea.draw();
+
     fill(255, 0, 0, 20);
     currentPreviousPositionsCircle.draw();
     fill(255, 0, 0, 20);
@@ -96,7 +103,7 @@ class World {
       ellipse(p.x, p.y, 6, 6);
     }
 
-    fill(255, 0, 0);
+    fill(0, 255, 0);
     goal.draw();
 
     for (int i = 0; i < dots.length; i++) {
