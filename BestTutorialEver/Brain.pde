@@ -1,13 +1,13 @@
 class Brain
 {
-  PVector[] directions;//series of vectors which get the dot to the goal (hopefully)
+  PVector[] directions; // series of vectors which get the dot to the goal (hopefully)
 
   Brain(int size)
   {
     directions = new PVector[size];
   }
 
-  //--------------------------------------------------------------------------------------------------------------------------------
+  // --------------------------------------------------------------------------------------------------------------------------------
   // creates a random vector
   PVector randomVector()
   {
@@ -16,8 +16,8 @@ class Brain
     return r;
   }
 
-  //--------------------------------------------------------------------------------------------------------------------------------
-  //sets all the vectors in directions to a random vector with length 1
+  // --------------------------------------------------------------------------------------------------------------------------------
+  // sets all the vectors in directions to a random vector with length 1
   void randomize()
   {
     for (int i = 0; i< directions.length; i++)
@@ -26,8 +26,8 @@ class Brain
     }
   }
 
-  //-------------------------------------------------------------------------------------------------------------------------------------
-  //returns a perfect copy of this brain object
+  // --------------------------------------------------------------------------------------------------------------------------------
+  // returns a perfect copy of this brain object
   Brain clone()
   {
     Brain clone = new Brain(directions.length);
@@ -38,9 +38,9 @@ class Brain
     return clone;
   }
 
-  //----------------------------------------------------------------------------------------------------------------------------------------
-  //mutates the brain by setting some of the directions to random vectors
-  void mutate(float mutationRate //chance that any vector in directions gets changed
+  // --------------------------------------------------------------------------------------------------------------------------------
+  // mutates the brain by setting some of the directions to random vectors
+  void mutate(float mutationRate // chance that any vector in directions gets changed
              )
   {
     for (int i = 0; i < directions.length; i++)
@@ -48,7 +48,7 @@ class Brain
       float rand = random(1);
       if (rand < mutationRate)
       {
-        //set this direction as a random direction
+        // set this direction as a random direction
         directions[i] = randomVector();
       }
     }

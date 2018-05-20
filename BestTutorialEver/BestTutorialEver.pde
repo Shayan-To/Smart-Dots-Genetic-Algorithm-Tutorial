@@ -2,10 +2,10 @@ World world;
 
 void setup()
 {
-  size(800, 600); //size of the window
-  frameRate(100);//increase this to make the dots go faster
+  size(800, 600); // size of the window
+  frameRate(100); // increase this to make the dots go faster
   randomSeed(5365);
-  world = new World(1000, 15);//create a new population with 1000 dots and 10 obstacles
+  world = new World(1000, 12); // create a new population with 1000 dots and 10 obstacles
   world.init();
 }
 
@@ -35,14 +35,14 @@ void draw()
 
     println("best step:", bestStep);
 
-    //genetic algorithm
+    // genetic algorithm
     world.breedNextGeneration();
 
     println("generation:", world.gen);
   }
   else
   {
-    //if any of the dots are still alive then update and then show them
+    // if any of the dots are still alive then update and then show them
     world.update();
     world.show();
   }

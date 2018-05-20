@@ -20,26 +20,26 @@ class Dot
   Dot(World world, Brain brain)
   {
     this.world = world;
-    this.brain = brain;//new brain with brainSize instruction
+    this.brain = brain; // new brain with brainSize instruction
     this.pos.set(this.world.startPoint);
   }
 
   Dot(World world, int brainSize)
   {
-    this(world, new Brain(brainSize));//new brain with brainSize instruction
+    this(world, new Brain(brainSize)); // new brain with brainSize instruction
   }
 
-  //-----------------------------------------------------------------------------------------------------------------
-  //draws the dot on the screen
+  // --------------------------------------------------------------------------------------------------------------------------------
+  // draws the dot on the screen
   void show()
   {
     int size = 4;
     switch (mode)
     {
-      case 0: //all other dots are just smaller black dots
+      case 0: // all other dots are just smaller black dots
         fill(0);
         break;
-      case 1: //if this dot is the best dot from the previous generation then draw it as a big green dot
+      case 1: // if this dot is the best dot from the previous generation then draw it as a big green dot
         fill(0, 255, 0);
         size = 6;
         break;
@@ -51,8 +51,8 @@ class Dot
     ellipse(pos.x, pos.y, size, size);
   }
 
-  //-----------------------------------------------------------------------------------------------------------------------
-  //moves the dot according to the brains directions
+  // --------------------------------------------------------------------------------------------------------------------------------
+  // moves the dot according to the brains directions
   void move()
   {
     if (brain.directions.length > step) // if there are still directions left then set the acceleration as the next PVector in the direcitons array
@@ -65,14 +65,14 @@ class Dot
       dead = true;
     }
 
-    //apply the acceleration and move the dot
+    // apply the acceleration and move the dot
     vel.add(acc);
-    vel.limit(5);//not too fast
+    vel.limit(5); // not too fast
     pos.add(vel);
   }
 
-  //-------------------------------------------------------------------------------------------------------------------
-  //calls the move function and check for collisions and stuff
+  // --------------------------------------------------------------------------------------------------------------------------------
+  // calls the move function and check for collisions and stuff
   void update()
   {
     if (!this.dead)
@@ -80,12 +80,12 @@ class Dot
       this.move();
       this.calculateFitness();
 
-      if (!this.world.screenRect.isInside(this.pos)) //if near the edges of the window then kill it
+      if (!this.world.screenRect.isInside(this.pos)) // if near the edges of the window then kill it
       {
         this.dead = true;
         return;
       }
-      if (this.world.goal.isInside(this.pos)) //if reached goal
+      if (this.world.goal.isInside(this.pos)) // if reached goal
       {
         this.reachedGoal = true;
         this.dead = true;
@@ -106,7 +106,7 @@ class Dot
 
       for (int j = 0; j < this.world.obstacles.length; j++)
       {
-        if (this.world.obstacles[j].isInside(this.pos)) //if hit obstacle
+        if (this.world.obstacles[j].isInside(this.pos)) // if hit obstacle
         {
           this.dead = true;
           return;
@@ -115,8 +115,8 @@ class Dot
     }
   }
 
-  //--------------------------------------------------------------------------------------------------------------------------------------
-  //calculates the fitness
+  // --------------------------------------------------------------------------------------------------------------------------------
+  // calculates the fitness
   void calculateFitness()
   {
     float distanceToGoal = pos.dist(this.world.goal.center());
@@ -144,8 +144,8 @@ class Dot
     }
   }
 
-  //--------------------------------------------------------------------------------------------------------------------------------------
-  //print the fitness
+  // --------------------------------------------------------------------------------------------------------------------------------
+  // print the fitness
   void printFitness()
   {
     float distanceToGoal = this.pos.dist(this.world.goal.center());
@@ -168,8 +168,8 @@ class Dot
     print(String.format("[%.4f + %.2f*%.4f = %.4f]  ", distanceReward, stepCoef, stepReward, this.fitness));
   }
 
-  //---------------------------------------------------------------------------------------------------------------------------------------
-  //clone it
+  // --------------------------------------------------------------------------------------------------------------------------------
+  // clone it
   Dot clone()
   {
     return new Dot(this.world, this.brain.clone()); // babies have the same brain as their parents

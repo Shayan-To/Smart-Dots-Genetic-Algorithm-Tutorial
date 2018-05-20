@@ -73,8 +73,8 @@ class World
     }
   }
 
-  //------------------------------------------------------------------------------------------------------------------------------
-  //show all dots
+  // --------------------------------------------------------------------------------------------------------------------------------
+  // show all dots
   void show()
   {
     fill(0, 255, 0, 20);
@@ -126,8 +126,8 @@ class World
     }
   }
 
-  //-------------------------------------------------------------------------------------------------------------------------------
-  //update all dots
+  // --------------------------------------------------------------------------------------------------------------------------------
+  // update all dots
   void update()
   {
     for (int i = 0; i< dots.length; i++)
@@ -136,8 +136,8 @@ class World
     }
   }
 
-  //-----------------------------------------------------------------------------------------------------------------------------------
-  //calculate the step constant to be set to all the dots
+  // --------------------------------------------------------------------------------------------------------------------------------
+  // calculate the step constant to be set to all the dots
   void calculateStepConst()
   {
     float sum = 0;
@@ -148,8 +148,8 @@ class World
     this.stepConst = sum / dots.length * 0.7;
   }
 
-  //------------------------------------------------------------------------------------------------------------------------------------
-  //returns whether all the dots are either dead or have reached the goal
+  // --------------------------------------------------------------------------------------------------------------------------------
+  // returns whether all the dots are either dead or have reached the goal
   boolean allDotsDead()
   {
     for (int i = 0; i< dots.length; i++)
@@ -162,11 +162,11 @@ class World
     return true;
   }
 
-  //-------------------------------------------------------------------------------------------------------------------------------------
-  //gets the next generation of dots
+  // --------------------------------------------------------------------------------------------------------------------------------
+  // gets the next generation of dots
   void breedNextGeneration()
   {
-    Dot[] newDots = new Dot[dots.length];//next gen
+    Dot[] newDots = new Dot[dots.length]; // next gen
     calculateFitnessSum();
 
     {
@@ -228,21 +228,21 @@ class World
       int third = (newDots.length - sz) / 3;
       for (int j = 0; j < third; j++)
       {
-        //select a parent based on fitness and get a baby from them
+        // select a parent based on fitness and get a baby from them
         Dot t = selectParent().clone();
         t.brain.mutate(0.01);
         newDots[sz++] = t;
       }
       for (int j = 0; j < third; j++)
       {
-        //select a parent based on fitness and get a baby from them
+        // select a parent based on fitness and get a baby from them
         Dot t = selectParent().clone();
         t.brain.mutate(0.05);
         newDots[sz++] = t;
       }
       for (; sz < newDots.length; )
       {
-        //select a parent based on fitness and get a baby from them
+        // select a parent based on fitness and get a baby from them
         Dot t = selectParent().clone();
         t.brain.mutate(0.1);
         newDots[sz++] = t;
@@ -257,7 +257,7 @@ class World
     this.gen++;
   }
 
-  //--------------------------------------------------------------------------------------------------------------------------------------
+  // --------------------------------------------------------------------------------------------------------------------------------
   // calculate the possible new forbidden area
   Circle calculatePreviousPositionsCircle(int count)
   {
@@ -282,7 +282,7 @@ class World
     return (Circle) new Circle().setFromCenterSize(t.x, t.y, radius);
   }
 
-  //--------------------------------------------------------------------------------------------------------------------------------------
+  // --------------------------------------------------------------------------------------------------------------------------------
   // calculate the possible new forbidden area
   void calculateForbiddenArea()
   {
@@ -317,8 +317,8 @@ class World
     }
   }
 
-  //--------------------------------------------------------------------------------------------------------------------------------------
-  //you get it
+  // --------------------------------------------------------------------------------------------------------------------------------
+  // you get it
   void calculateFitnessSum()
   {
     fitnessSum = 0;
@@ -328,13 +328,13 @@ class World
     }
   }
 
-  //-------------------------------------------------------------------------------------------------------------------------------------
-  //chooses dot from the population to return randomly(considering fitness)
+  // --------------------------------------------------------------------------------------------------------------------------------
+  // chooses dot from the population to return randomly(considering fitness)
   Dot selectParent()
   {
-    //this function works by randomly choosing a value between 0 and the sum of all the fitnesses
-    //then go through all the dots and add their fitness to a running sum and if that sum is greater than the random value generated that dot is chosen
-    //since dots with a higher fitness function add more to the running sum then they have a higher chance of being chosen
+    // this function works by randomly choosing a value between 0 and the sum of all the fitnesses
+    // then go through all the dots and add their fitness to a running sum and if that sum is greater than the random value generated that dot is chosen
+    // since dots with a higher fitness function add more to the running sum then they have a higher chance of being chosen
 
     float rand = random(fitnessSum);
     float runningSum = 0;
@@ -348,13 +348,13 @@ class World
       }
     }
 
-    //should never get to this point
+    // should never get to this point
     println("An error has occured.");
     return null;
   }
 
-  //------------------------------------------------------------------------------------------------------------------------------------------
-  //sort all the dots based on bestFitness
+  // --------------------------------------------------------------------------------------------------------------------------------
+  // sort all the dots based on bestFitness
   void sortDots(boolean best)
   {
     java.util.Comparator<Dot> cmp;
