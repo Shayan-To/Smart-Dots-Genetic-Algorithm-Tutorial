@@ -12,7 +12,8 @@ class World {
   final Rectangle obstacleAreaRect = new Rectangle(screenRect.x() + obstacleAreaMargin, screenRect.y() + obstacleAreaMargin,
                                                    screenRect.w() - obstacleAreaMargin * 2, screenRect.h() - obstacleAreaMargin * 2);
 
-  final Circle stepCountingArea = (Circle) new Circle().setFromCenterSize(goal.cx(), goal.cy(), 100);
+  final float stepCountingMinRadius = 75;
+  final float stepCountingMaxRadius = 150;
 
   final float forbiddenAreaRadius = 50;
   final float previousPositionsForbiddenRadius = 5;

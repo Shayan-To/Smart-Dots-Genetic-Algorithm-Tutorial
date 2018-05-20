@@ -111,14 +111,19 @@ class Dot {
     {
       distanceToGoal = this.world.goal.r();
     }
+
     // between 0 and 1
-    this.fitness = this.world.goal.r() / distanceToGoal;
-    if (this.world.stepCountingArea.isInside(this.pos))
-    {
-      // between 0 and maybe a bit less than 1
-      // (stepConst = averageSteps * 0.7)
-      this.fitness += this.world.stepConst / this.step;
-    }
+    float distanceReward = this.world.goal.r() / distanceToGoal;
+
+    // add the step reward gradually
+    float stepCoef = (distanceToGoal - this.world.stepCountingMaxRadius) / (this.world.stepCountingMinRadius - this.world.stepCountingMaxRadius);
+    stepCoef = min(max(stepCoef, 0), 1);
+
+    // between 0 and maybe a bit less than 1
+    // (stepConst = averageSteps * 0.7)
+    float stepReward = this.world.stepConst / this.step;
+
+    this.fitness = distanceReward + stepReward * stepCoef;
 
     if (this.bestFitness < this.fitness)
     {
@@ -134,12 +139,19 @@ class Dot {
     {
       distanceToGoal = this.world.goal.r();
     }
-    print(String.format("[%.4f", this.world.goal.r() / distanceToGoal));
-    if (this.world.stepCountingArea.isInside(this.pos))
-    {
-      print(String.format("+%.4f", this.world.stepConst / this.step));
-    }
-    print(String.format("=%.4f]  ", this.fitness));
+
+    // between 0 and 1
+    float distanceReward = this.world.goal.r() / distanceToGoal;
+
+    // add the step reward gradually
+    float stepCoef = (distanceToGoal - this.world.stepCountingMaxRadius) / (this.world.stepCountingMinRadius - this.world.stepCountingMaxRadius);
+    stepCoef = min(max(stepCoef, 0), 1);
+
+    // between 0 and maybe a bit less than 1
+    // (stepConst = averageSteps * 0.7)
+    float stepReward = this.world.stepConst / this.step;
+
+    print(String.format("[%.4f + %.2f*%.4f = %.4f]  ", distanceReward, stepCoef, stepReward, this.fitness));
   }
 
   //---------------------------------------------------------------------------------------------------------------------------------------
