@@ -80,15 +80,6 @@ class Dot {
         return;
       }
 
-      for (int j = 0; j < this.world.obstacles.length; j++)
-      {
-        if (this.world.obstacles[j].isInside(this.pos)) //if hit obstacle
-        {
-          this.dead = true;
-          return;
-        }
-      }
-
       for (int i = 0; i < this.world.forbiddenAreas.size(); i++)
       {
         if (this.world.forbiddenAreas.get(i).isInside(this.pos))
@@ -97,7 +88,16 @@ class Dot {
           this.dead = true;
           this.fitness = 0;
           this.bestFitness = 0;
-          break;
+          return;
+        }
+      }
+
+      for (int j = 0; j < this.world.obstacles.length; j++)
+      {
+        if (this.world.obstacles[j].isInside(this.pos)) //if hit obstacle
+        {
+          this.dead = true;
+          return;
         }
       }
     }
