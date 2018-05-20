@@ -276,14 +276,26 @@ class World {
     this.currentPreviousPositionsCircle.set(t);
     this.currentPreviousPositionsForbiddenCircle.setFromCenterSize(t.cx(), t.cy(), previousPositionsForbiddenRadius);
 
-    if (cnt == 10 & radius <= previousPositionsForbiddenRadius)
+    Circle forbiddenArea = new Circle();
+    boolean addForbiddenArea = count == 10 & t.r() <= previousPositionsForbiddenRadius;
+
+    if (addForbiddenArea)
     {
-      Circle forbiddenArea = (Circle) new Circle().setFromCenterSize(t.cx(), t.cy(), forbiddenAreaRadius);
-      if (!forbiddenAreasForbiddenCircle.overlaps(forbiddenArea))
-      {
-        forbiddenAreas.add(forbiddenArea);
-        previousBestPositions.clear();
-      }
+      forbiddenArea.setFromCenterSize(t.cx(), t.cy(), forbiddenAreaRadius);
+      addForbiddenArea = !forbiddenAreasForbiddenCircle.overlaps(forbiddenArea);
+    }
+
+    if (!addForbiddenArea & size >= 20)
+    {
+      t = this.calculatePreviousPositionsCircle(20);
+      forbiddenArea.setFromCenterSize(t.cx(), t.cy(), forbiddenAreaRadius);
+      addForbiddenArea = t.r() <= previousPositionsForbiddenRadius;
+    }
+
+    if (addForbiddenArea)
+    {
+      forbiddenAreas.add(forbiddenArea);
+      previousBestPositions.clear();
     }
   }
 
