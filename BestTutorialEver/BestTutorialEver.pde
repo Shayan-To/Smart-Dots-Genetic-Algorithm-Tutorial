@@ -1,6 +1,7 @@
 World world;
 
-void setup() {
+void setup()
+{
   size(800, 600); //size of the window
   frameRate(100);//increase this to make the dots go faster
   randomSeed(5365);
@@ -8,10 +9,12 @@ void setup() {
   world.init();
 }
 
-void draw() {
+void draw()
+{
   background(255);
 
-  if (world.allDotsDead()) {
+  if (world.allDotsDead())
+  {
     println();
 
     world.sortDots(true);
@@ -36,7 +39,9 @@ void draw() {
     world.breedNextGeneration();
 
     println("generation:", world.gen);
-  } else {
+  }
+  else
+  {
     //if any of the dots are still alive then update and then show them
     world.update();
     world.show();

@@ -1,4 +1,5 @@
-class Dot {
+class Dot
+{
   final PVector pos = new PVector();
   final PVector vel = new PVector();
   final PVector acc = new PVector();
@@ -30,9 +31,11 @@ class Dot {
 
   //-----------------------------------------------------------------------------------------------------------------
   //draws the dot on the screen
-  void show() {
+  void show()
+  {
     int size = 4;
-    switch (mode) {
+    switch (mode)
+    {
       case 0: //all other dots are just smaller black dots
         fill(0);
         break;
@@ -50,11 +53,15 @@ class Dot {
 
   //-----------------------------------------------------------------------------------------------------------------------
   //moves the dot according to the brains directions
-  void move() {
-    if (brain.directions.length > step) {//if there are still directions left then set the acceleration as the next PVector in the direcitons array
+  void move()
+  {
+    if (brain.directions.length > step) // if there are still directions left then set the acceleration as the next PVector in the direcitons array
+    {
       acc.set(brain.directions[step]);
       step++;
-    } else {//if at the end of the directions array then the dot is dead
+    }
+    else // if at the end of the directions array then the dot is dead
+    {
       dead = true;
     }
 
@@ -68,15 +75,18 @@ class Dot {
   //calls the move function and check for collisions and stuff
   void update()
   {
-    if (!this.dead) {
+    if (!this.dead)
+    {
       this.move();
       this.calculateFitness();
 
-      if (!this.world.screenRect.isInside(this.pos)) {//if near the edges of the window then kill it
+      if (!this.world.screenRect.isInside(this.pos)) //if near the edges of the window then kill it
+      {
         this.dead = true;
         return;
       }
-      if (this.world.goal.isInside(this.pos)) {//if reached goal
+      if (this.world.goal.isInside(this.pos)) //if reached goal
+      {
         this.reachedGoal = true;
         this.dead = true;
         return;
@@ -107,7 +117,8 @@ class Dot {
 
   //--------------------------------------------------------------------------------------------------------------------------------------
   //calculates the fitness
-  void calculateFitness() {
+  void calculateFitness()
+  {
     float distanceToGoal = pos.dist(this.world.goal.center());
     if (distanceToGoal < this.world.goal.r())
     {
@@ -135,7 +146,8 @@ class Dot {
 
   //--------------------------------------------------------------------------------------------------------------------------------------
   //print the fitness
-  void printFitness() {
+  void printFitness()
+  {
     float distanceToGoal = this.pos.dist(this.world.goal.center());
     if (distanceToGoal < this.world.goal.r())
     {
@@ -158,7 +170,8 @@ class Dot {
 
   //---------------------------------------------------------------------------------------------------------------------------------------
   //clone it
-  Dot clone() {
+  Dot clone()
+  {
     return new Dot(this.world, this.brain.clone()); // babies have the same brain as their parents
   }
 }

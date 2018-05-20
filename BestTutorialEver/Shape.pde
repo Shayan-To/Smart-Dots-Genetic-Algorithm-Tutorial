@@ -75,12 +75,12 @@ abstract class Shape
   {
     return this.y + this.h;
   }
-  
+
   float cx()
   {
     return this.x + this.w / 2;
   }
-  
+
   float cy()
   {
     return this.y + this.h / 2;

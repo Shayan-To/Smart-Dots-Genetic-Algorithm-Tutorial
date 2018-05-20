@@ -1,4 +1,5 @@
-class World {
+class World
+{
   final int brainSize = 1000;
   final Rectangle screenRect = new Rectangle(2, 2, width - 4, height - 4);
   final Circle goal  = (Circle) new Circle().setFromCenterSize(400, 10, 5);
@@ -34,7 +35,8 @@ class World {
   float stepConst = 300;
   int gen = 0;
 
-  World(int dotsCount, int obstaclesCount) {
+  World(int dotsCount, int obstaclesCount)
+  {
     dots = new Dot[dotsCount];
     obstacles = new Rectangle[obstaclesCount];
   }
@@ -73,7 +75,8 @@ class World {
 
   //------------------------------------------------------------------------------------------------------------------------------
   //show all dots
-  void show() {
+  void show()
+  {
     fill(0, 255, 0, 20);
     stepCountingMaxArea.draw();
     fill(0, 255, 0, 20);
@@ -106,14 +109,18 @@ class World {
     fill(0, 255, 0);
     goal.draw();
 
-    for (int i = 0; i < dots.length; i++) {
-      if (dots[i].mode == 0) {
+    for (int i = 0; i < dots.length; i++)
+    {
+      if (dots[i].mode == 0)
+      {
         dots[i].show();
       }
     }
 
-    for (int i = 0; i < dots.length; i++) {
-      if (dots[i].mode != 0) {
+    for (int i = 0; i < dots.length; i++)
+    {
+      if (dots[i].mode != 0)
+      {
         dots[i].show();
       }
     }
@@ -121,17 +128,21 @@ class World {
 
   //-------------------------------------------------------------------------------------------------------------------------------
   //update all dots
-  void update() {
-    for (int i = 0; i< dots.length; i++) {
+  void update()
+  {
+    for (int i = 0; i< dots.length; i++)
+    {
       this.dots[i].update();
     }
   }
 
   //-----------------------------------------------------------------------------------------------------------------------------------
   //calculate the step constant to be set to all the dots
-  void calculateStepConst() {
+  void calculateStepConst()
+  {
     float sum = 0;
-    for (int i = 0; i< dots.length; i++) {
+    for (int i = 0; i< dots.length; i++)
+    {
       sum += dots[i].step;
     }
     this.stepConst = sum / dots.length * 0.7;
@@ -139,9 +150,12 @@ class World {
 
   //------------------------------------------------------------------------------------------------------------------------------------
   //returns whether all the dots are either dead or have reached the goal
-  boolean allDotsDead() {
-    for (int i = 0; i< dots.length; i++) {
-      if (!dots[i].dead) {
+  boolean allDotsDead()
+  {
+    for (int i = 0; i< dots.length; i++)
+    {
+      if (!dots[i].dead)
+      {
         return false;
       }
     }
@@ -150,7 +164,8 @@ class World {
 
   //-------------------------------------------------------------------------------------------------------------------------------------
   //gets the next generation of dots
-  void breedNextGeneration() {
+  void breedNextGeneration()
+  {
     Dot[] newDots = new Dot[dots.length];//next gen
     calculateFitnessSum();
 
@@ -211,19 +226,22 @@ class World {
       }
 
       int third = (newDots.length - sz) / 3;
-      for (int j = 0; j < third; j++) {
+      for (int j = 0; j < third; j++)
+      {
         //select a parent based on fitness and get a baby from them
         Dot t = selectParent().clone();
         t.brain.mutate(0.01);
         newDots[sz++] = t;
       }
-      for (int j = 0; j < third; j++) {
+      for (int j = 0; j < third; j++)
+      {
         //select a parent based on fitness and get a baby from them
         Dot t = selectParent().clone();
         t.brain.mutate(0.05);
         newDots[sz++] = t;
       }
-      for (; sz < newDots.length; ) {
+      for (; sz < newDots.length; )
+      {
         //select a parent based on fitness and get a baby from them
         Dot t = selectParent().clone();
         t.brain.mutate(0.1);
@@ -301,16 +319,19 @@ class World {
 
   //--------------------------------------------------------------------------------------------------------------------------------------
   //you get it
-  void calculateFitnessSum() {
+  void calculateFitnessSum()
+  {
     fitnessSum = 0;
-    for (int i = 0; i< dots.length; i++) {
+    for (int i = 0; i< dots.length; i++)
+    {
       fitnessSum += dots[i].bestFitness;
     }
   }
 
   //-------------------------------------------------------------------------------------------------------------------------------------
   //chooses dot from the population to return randomly(considering fitness)
-  Dot selectParent() {
+  Dot selectParent()
+  {
     //this function works by randomly choosing a value between 0 and the sum of all the fitnesses
     //then go through all the dots and add their fitness to a running sum and if that sum is greater than the random value generated that dot is chosen
     //since dots with a higher fitness function add more to the running sum then they have a higher chance of being chosen
@@ -318,9 +339,11 @@ class World {
     float rand = random(fitnessSum);
     float runningSum = 0;
 
-    for (int i = 0; i< dots.length; i++) {
+    for (int i = 0; i< dots.length; i++)
+    {
       runningSum+= dots[i].bestFitness;
-      if (runningSum > rand) {
+      if (runningSum > rand)
+      {
         return dots[i];
       }
     }
@@ -332,22 +355,27 @@ class World {
 
   //------------------------------------------------------------------------------------------------------------------------------------------
   //sort all the dots based on bestFitness
-  void sortDots(boolean best) {
+  void sortDots(boolean best)
+  {
     java.util.Comparator<Dot> cmp;
     if (best)
     {
-      cmp = new java.util.Comparator<Dot>() {
+      cmp = new java.util.Comparator<Dot>()
+      {
         @Override
-        public int compare(Dot a, Dot b) {
+        public int compare(Dot a, Dot b)
+        {
           return -Float.compare(a.bestFitness, b.bestFitness);
         }
       };
     }
     else
     {
-      cmp = new java.util.Comparator<Dot>() {
+      cmp = new java.util.Comparator<Dot>()
+      {
         @Override
-        public int compare(Dot a, Dot b) {
+        public int compare(Dot a, Dot b)
+        {
           return -Float.compare(a.fitness, b.fitness);
         }
       };
