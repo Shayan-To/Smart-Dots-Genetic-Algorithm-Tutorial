@@ -19,7 +19,7 @@ class World {
 
   final float forbiddenAreaRadius = 50;
   final float previousPositionsForbiddenRadius = 5;
-  final Circle goalMarginedCircle = (Circle) new Circle().setFromCenterSize(goal.cx(), goal.cy(), 100 * 4 / PI);
+  final Circle forbiddenAreasForbiddenCircle = stepCountingMaxArea; // set it to stepCountingMaxArea so we don't have to have a separate representation.
 
   final Circle currentPreviousPositionsCircle = new Circle();
   final Circle currentPreviousPositionsForbiddenCircle = new Circle();
@@ -268,7 +268,7 @@ class World {
     if (cnt == 10 & radius <= previousPositionsForbiddenRadius)
     {
       Circle forbiddenArea = (Circle) new Circle().setFromCenterSize(t.x, t.y, forbiddenAreaRadius);
-      if (!goalMarginedCircle.overlaps(forbiddenArea))
+      if (!forbiddenAreasForbiddenCircle.overlaps(forbiddenArea))
       {
         forbiddenAreas.add(forbiddenArea);
         previousBestPositions.clear();
