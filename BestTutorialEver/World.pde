@@ -5,6 +5,7 @@ class World
     final Circle goal  = (Circle) new Circle().setFromCenterRadius(400, 10, 5);
     final PVector goalCenter = goal.center();
     final PVector startPoint = new PVector(screenRect.w() / 2, screenRect.h() - 10);
+    final Circle startPointNeighborhood = (Circle) new Circle().setFromCenterRadius(startPoint.x, startPoint.y, 25);
     final float maxDistance = sqrt(width * width + height * height);
     final float gridSize = 50;
 
@@ -24,7 +25,11 @@ class World
 
     final float forbiddenAreaRadius = 50;
     final float previousPositionsForbiddenRadius = 5;
-    final Circle forbiddenAreasForbiddenCircle = stepCountingMaxArea; // set it to stepCountingMaxArea so we don't have to have a separate representation.
+    final Circle forbiddenAreasFreeGoalCircle = stepCountingMaxArea; // set it to stepCountingMaxArea so we don't have to have a separate representation
+    final int forbiddenAreaBoundingBoxMargin = 15;
+    final Rectangle forbiddenAreaBoundingBox = (Rectangle) new Rectangle().setFromCenterSize(screenRect.cx(), screenRect.cy(),
+                                                                                             screenRect.w() - forbiddenAreaBoundingBoxMargin * 2,
+                                                                                             screenRect.h() - forbiddenAreaBoundingBoxMargin * 2);
 
     final Circle currentPreviousPositionsCircle = new Circle();
     final Circle currentPreviousPositionsForbiddenCircle = new Circle();
@@ -282,12 +287,8 @@ class World
         // the dots are already sorted by fitness
         this.previousBestPositions.add(this.dots[0].pos);
 
-        Circle newForbiddenArea = this.calculateForbiddenArea();
-        if (newForbiddenArea != null)
-        {
-            forbiddenAreas.add(newForbiddenArea);
-            previousBestPositions.clear();
-        }
+        Tuple2<Circle, String> newForbiddenArea = this.calculateForbiddenArea();
+        this.applyForbiddenArea(newForbiddenArea.item1, newForbiddenArea.item2);
 
         this.calculateAverages();
 
@@ -341,7 +342,7 @@ class World
 
     // --------------------------------------------------------------------------------------------------------------------------------
     // calculate the possible new forbidden area
-    Circle calculateForbiddenArea()
+    Tuple2<Circle, String> calculateForbiddenArea()
     {
         int size = this.previousBestPositions.size();
 
@@ -359,11 +360,12 @@ class World
             if (t.r() <= previousPositionsForbiddenRadius)
             {
                 forbiddenArea.setFromCenterRadius(t.cx(), t.cy(), forbiddenAreaRadius);
-                if (!this.forbiddenAreasForbiddenCircle.overlaps(forbiddenArea) &&
+                if (!this.forbiddenAreasFreeGoalCircle.overlaps(forbiddenArea) &&
                     this.countDotsIn(forbiddenArea) >= this.dots.length / 5)
                 {
-                    println(String.format("** New forbidden area created. 10 generations, %d dots, not near goal.", this.countDotsIn(forbiddenArea)));
-                    return forbiddenArea;
+                    return new Tuple2<Circle, String>(
+                            forbiddenArea,
+                            String.format("** New forbidden area created. 10 generations, %d dots, not near goal.", this.countDotsIn(forbiddenArea)));
                 }
             }
         }
@@ -374,11 +376,11 @@ class World
             if (t.r() <= previousPositionsForbiddenRadius)
             {
                 forbiddenArea.setFromCenterRadius(t.cx(), t.cy(), forbiddenAreaRadius);
-                if (this.countDotsIn(forbiddenArea) >= this.dots.length / 5 &&
-                    !this.goal.overlaps(forbiddenArea))
+                if (this.countDotsIn(forbiddenArea) >= this.dots.length / 5)
                 {
-                    println(String.format("** New forbidden area created. 20 generations, %d dots.", this.countDotsIn(forbiddenArea)));
-                    return forbiddenArea;
+                    return new Tuple2<Circle, String>(
+                            forbiddenArea,
+                            String.format("** New forbidden area created. 20 generations, %d dots.", this.countDotsIn(forbiddenArea)));
                 }
             }
         }
@@ -389,12 +391,12 @@ class World
             if (t.r() <= previousPositionsForbiddenRadius)
             {
                 forbiddenArea.setFromCenterRadius(t.cx(), t.cy(), forbiddenAreaRadius);
-                if (!this.forbiddenAreasForbiddenCircle.overlaps(forbiddenArea) &&
-                    this.countDotsIn(forbiddenArea) >= this.dots.length / 10 &&
-                    !this.goal.overlaps(forbiddenArea))
+                if (!this.forbiddenAreasFreeGoalCircle.overlaps(forbiddenArea) &&
+                    this.countDotsIn(forbiddenArea) >= this.dots.length / 10)
                 {
-                    println(String.format("** New forbidden area created. 20 generations, %d dots, not near goal.", this.countDotsIn(forbiddenArea)));
-                    return forbiddenArea;
+                    return new Tuple2<Circle, String>(
+                            forbiddenArea,
+                            String.format("** New forbidden area created. 20 generations, %d dots, not near goal.", this.countDotsIn(forbiddenArea)));
                 }
             }
         }
@@ -405,11 +407,11 @@ class World
             if (t.r() <= previousPositionsForbiddenRadius)
             {
                 forbiddenArea.setFromCenterRadius(t.cx(), t.cy(), forbiddenAreaRadius);
-                if (this.countDotsIn(forbiddenArea) >= this.dots.length / 10 &&
-                    !this.goal.overlaps(forbiddenArea))
+                if (this.countDotsIn(forbiddenArea) >= this.dots.length / 10)
                 {
-                    println(String.format("** New forbidden area created. 30 generations, %d dots.", this.countDotsIn(forbiddenArea)));
-                    return forbiddenArea;
+                    return new Tuple2<Circle, String>(
+                            forbiddenArea,
+                            String.format("** New forbidden area created. 30 generations, %d dots.", this.countDotsIn(forbiddenArea)));
                 }
             }
         }
@@ -420,11 +422,11 @@ class World
             if (t.r() <= previousPositionsForbiddenRadius)
             {
                 forbiddenArea.setFromCenterRadius(t.cx(), t.cy(), forbiddenAreaRadius);
-                if (!this.forbiddenAreasForbiddenCircle.overlaps(forbiddenArea) &&
-                    !this.goal.overlaps(forbiddenArea))
+                if (!this.forbiddenAreasFreeGoalCircle.overlaps(forbiddenArea))
                 {
-                    println(String.format("** New forbidden area created. 30 generations, not near goal."));
-                    return forbiddenArea;
+                    return new Tuple2<Circle, String>(
+                            forbiddenArea,
+                            String.format("** New forbidden area created. 30 generations, not near goal."));
                 }
             }
         }
@@ -435,15 +437,41 @@ class World
             if (t.r() <= previousPositionsForbiddenRadius)
             {
                 forbiddenArea.setFromCenterRadius(t.cx(), t.cy(), forbiddenAreaRadius);
-                if (!this.goal.overlaps(forbiddenArea))
+                if (true)
                 {
-                    println(String.format("** New forbidden area created. 30 generations."));
-                    return forbiddenArea;
+                    return new Tuple2<Circle, String>(
+                            forbiddenArea,
+                            String.format("** New forbidden area created. 40 generations."));
                 }
             }
         }
 
-        return null;
+        return new Tuple2<Circle, String>(null, null);
+    }
+
+    // --------------------------------------------------------------------------------------------------------------------------------
+    // applies the new forbidden area
+    void applyForbiddenArea(Circle forbiddenArea, String message)
+    {
+        if (forbiddenArea == null)
+        {
+            return;
+        }
+
+        if (this.goal.overlaps(forbiddenArea) | this.startPointNeighborhood.overlaps(forbiddenArea))
+        {
+            return;
+        }
+
+        Rectangle bounds = new Rectangle();
+        bounds.set(forbiddenArea);
+        bounds.intersectWith(this.forbiddenAreaBoundingBox);
+        forbiddenArea.setFromCenterSize(bounds.cx(), bounds.cy(), min(bounds.w(), bounds.h()));
+
+        forbiddenAreas.add(forbiddenArea);
+        previousBestPositions.clear();
+
+        println(message);
     }
 
     // --------------------------------------------------------------------------------------------------------------------------------
