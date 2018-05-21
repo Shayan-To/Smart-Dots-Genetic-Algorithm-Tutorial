@@ -4,3 +4,4 @@ In the name of God
 - [ ] Maybe lowering the percentage of 0.1 and 0.05 's that are generated based on generation (generations from last forbidden area).
 - [ ] Trying other tricks in fitness function, instead of "1 / distance" and "averageStep * 0.7 / stepCount". Like "(Max - value) / average * 0.7".
 - [ ] Change the rule that the best dot gets a tenth of 0.01 mutated children. It is killing diversity. Think about it.
+- [ ] How is it possible get the dots to learn to get away from the goal to get nearer? It is very common that they need to go around an obstacle and they simply can't.
