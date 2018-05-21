@@ -13,8 +13,9 @@ class World
     final int obstacleAreaMargin = 5;
     final int obstacleMinSize = 50;
     final int obstacleMaxSize = 200;
-    final Rectangle obstacleAreaRect = new Rectangle(screenRect.x() + obstacleAreaMargin, screenRect.y() + obstacleAreaMargin,
-                                                     screenRect.w() - obstacleAreaMargin * 2, screenRect.h() - obstacleAreaMargin * 2);
+    final Rectangle obstacleAreaRect = (Rectangle) new Rectangle().setFromCenterSize(screenRect.cx(), screenRect.cy(),
+                                                                                     screenRect.w() - obstacleAreaMargin * 2,
+                                                                                     screenRect.h() - obstacleAreaMargin * 2);
 
     final float stepCountingMinRadius = 75;
     final Circle stepCountingMinArea = (Circle) new Circle().setFromCenterRadius(goal.cx(), goal.cy(), stepCountingMinRadius);
