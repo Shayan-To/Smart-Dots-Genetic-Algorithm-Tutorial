@@ -19,6 +19,7 @@ void draw()
 
         world.sortDots(true);
         int bestStep = world.dots[0].step;
+        boolean isAtGoal = world.dots[0].reachedGoal;
         for (int i = 0; i < 10; i++)
         {
             print(String.format("%.4f  ", world.dots[i].bestFitness));
@@ -33,7 +34,7 @@ void draw()
         }
         println();
 
-        println("best step:", bestStep);
+        println(String.format("best dot's step: %d%s", bestStep, isAtGoal ? "" : " (not at goal)"));
 
         // genetic algorithm
         world.breedNextGeneration();
