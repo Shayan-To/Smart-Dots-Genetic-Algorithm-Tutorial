@@ -142,7 +142,7 @@ class World
     // draw a grid
     void drawGrid()
     {
-        stroke(230);
+        stroke(200);
         for (int i = (int) (this.maxDistance / this.gridSize) + 1; i > 0 ; i--)
         {
             if (i % 2 == 0)
@@ -151,7 +151,7 @@ class World
             }
             else
             {
-                fill(245);
+                fill(235);
             }
             ellipse(this.goalCenter.x, this.goalCenter.y, 2 * i * this.gridSize, 2 * i * this.gridSize);
         }
