@@ -23,7 +23,7 @@ class World
     final float stepCountingMaxRadius = 150;
     final Circle stepCountingMaxArea = (Circle) new Circle().setFromCenterRadius(goal.cx(), goal.cy(), stepCountingMaxRadius);
 
-    final float forbiddenAreaRadius = 50;
+    final float forbiddenAreaRadius = 25;
     final float previousPositionsForbiddenRadius = 5;
     final Circle forbiddenAreasFreeGoalCircle = stepCountingMaxArea; // set it to stepCountingMaxArea so we don't have to have a separate representation
     final int forbiddenAreaBoundingBoxMargin = 15;
